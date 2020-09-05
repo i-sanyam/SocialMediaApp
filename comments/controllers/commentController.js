@@ -3,15 +3,12 @@ const responses = require('../../responses/responses');
 const constants = require('../../properties/constants');
 
 exports.createComment = async function (req, res) {
-  // verify access token from middleware
-  // and get UserDetails in req.
 
   try {
-    req = req.body;
     await commentServices.createComment(req.apiReference, {
-      text: req.text,
-      post_id: req.post_id,
-      author_id: author_id // modify
+      text: req.body.text,
+      post_id: req.body.post_id,
+      author_id: req.userDetails.user_id,
     });
     return responses.sendResponse(
       res,
@@ -28,16 +25,13 @@ exports.createComment = async function (req, res) {
 }
 
 exports.likeComment = async function (req, res) {
-  // verify access token from middleware
-  // and get UserDetails in req.
-
+  
   try {
-    req = req.body;
     // to implement tb_comment_like relationship
     await commentServices.likeComment(req.apiReference, {
-      comment_id: req.comment_id,
-      liked_by_id: author_id, // modify, and to implement
-      is_liked: req.is_liked,
+      comment_id: req.body.comment_id,
+      liked_by_id: req.userDetails.user_id,
+      is_liked: req.body.is_liked,
     });
     return responses.sendResponse(
       res,
@@ -54,11 +48,8 @@ exports.likeComment = async function (req, res) {
 }
 
 exports.getComments = async function (req, res) {
-  // verify access token from middleware
-  // and get UserDetails in req.
 
   try {
-    req = req.body;
     let comments = await commentServices.getComments(req.apiReference, {
       post_id: req.post_id,
       limit: req.limit,
