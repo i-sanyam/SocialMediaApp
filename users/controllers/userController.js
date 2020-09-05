@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const hash = require('md5');
+const hash = require('salted-md5');
 const _ = require('underscore')
 const config = require("../../config/config");
 
@@ -12,7 +12,7 @@ exports.login = async (req, res) => {
   try {
     let userDetails = await userService.getUser(req.apiReference, {
       username: req.body.username,
-      password: hash(req.body.password)
+      password: hash(req.body.password, config.SALT),
     });
     if (_.isEmpty(userDetails)) throw new Error(constants.responseFlags.LOGIN_ERROR);
     userDetails = {
@@ -20,7 +20,7 @@ exports.login = async (req, res) => {
     };
 
     jwt.sign({ userDetails }, config.TOKEN_SECRET, { expiresIn: config.SESSION_EXPIRY }, (err, token) => {
-      res.json({token});
+      res.cookie('access_token', token).status(200).send('Success Login');
     });
   } catch (loginError) {
     logging.logError(apiReference, {EVENT: 'Login Error', ERROR: loginError});

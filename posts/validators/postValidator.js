@@ -11,7 +11,6 @@ exports.createPost = (req, res, next) => {
   }
   
   if (validator.validateFields(req.apiReference, Joi.object().keys({
-    access_token    : Joi.string().required(),
     text            : Joi.string().max(500, 'utf8').required(),
   }).unknown(true), req.body, res)) {
     next();
@@ -25,7 +24,6 @@ exports.likePost = (req, res, next) => {
   }
   
   if (validator.validateFields(req.apiReference, Joi.object().keys({
-    access_token    : Joi.string().required(),
     post_id         : Joi.number().required(),
     is_liked        : Joi.boolean().required(),
   }).unknown(true), req.body, res)) {
@@ -40,7 +38,6 @@ exports.getPosts = (req, res, next) => {
   }
   
   if (validator.validateFields(req.apiReference, Joi.object().keys({
-    access_token    : Joi.string().required(),
     home_feed       : Joi.boolean().required(),
     limit           : Joi.number().required(),
     offset          : Joi.number().required(),
