@@ -2,7 +2,7 @@ const fileModule = "user";
 
 const Joi = require("joi");
 
-const validator = require("./../../validators/vaildator");
+const validator = require("../../validators/vaildator");
 
 exports.login = (req, res, next) => {
   req.apiReference = {

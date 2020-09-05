@@ -2,7 +2,7 @@ const fileModule = "posts";
 
 const Joi = require("joi");
 
-const validator = require("./../../validators/vaildator");
+const validator = require("../../validators/vaildator");
 
 exports.createPost = (req, res, next) => {
   req.apiReference = {

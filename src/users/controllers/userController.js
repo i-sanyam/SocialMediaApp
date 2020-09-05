@@ -5,7 +5,7 @@ const config = require("../../config/config");
 
 const userService = require('../services/userService');
 const logging = require('../../logging/logging');
-const responses = require('../../responses/responses');
+const responses = require('../../../public/responses/responses');
 const constants = require('../../properties/constants');
 
 exports.login = async (req, res) => {

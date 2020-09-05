@@ -1,4 +1,4 @@
-const db = require('./../../mysql/db');
+const db = require('../../mysql/db');
 
 exports.getUser = async function (apiReference, opts) {
   let sql = `SELECT ${opts.columns || '*'} FROM tb_users WHERE 1=1 `;

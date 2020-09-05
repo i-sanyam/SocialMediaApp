@@ -1,13 +1,12 @@
-const commentServices = require('./../services/commentService');
-const responses = require('../../responses/responses');
+const postServices = require('../services/postService');
+const responses = require('../../../public/responses/responses');
 const constants = require('../../properties/constants');
 
-exports.createComment = async function (req, res) {
+exports.createPost =  async function (req, res) {
 
   try {
-    await commentServices.createComment(req.apiReference, {
+    await postServices.createPost(req.apiReference, {
       text: req.body.text,
-      post_id: req.body.post_id,
       author_id: req.userDetails.user_id,
     });
     return responses.sendResponse(
@@ -24,12 +23,12 @@ exports.createComment = async function (req, res) {
   }
 }
 
-exports.likeComment = async function (req, res) {
-  
+exports.likePost = async function (req, res) {
+
   try {
-    // to implement tb_comment_like relationship
-    await commentServices.likeComment(req.apiReference, {
-      comment_id: req.body.comment_id,
+    // to implement tb post like relationship
+    await postServices.likePost(req.apiReference, {
+      post_id: req.body.post_id,
       liked_by_id: req.userDetails.user_id,
       is_liked: req.body.is_liked,
     });
@@ -47,11 +46,12 @@ exports.likeComment = async function (req, res) {
   }
 }
 
-exports.getComments = async function (req, res) {
-
+exports.getPosts = async function (req, res) {
+  
   try {
-    let comments = await commentServices.getComments(req.apiReference, {
-      post_id: req.body.post_id,
+    let posts = await postServices.getPosts(req.apiReference, {
+      user_id: req.userDetails.user_id,
+      home_feed: req.body.home_feed,
       limit: req.body.limit,
       offset: req.body.offset,
     });
@@ -59,7 +59,7 @@ exports.getComments = async function (req, res) {
       res,
       constants.responseMessages.ACTION_COMPLETE,
       constants.responseFlags.ACTION_COMPLETE,
-      comments
+      posts
     );
   } catch (createPostError) {
       return responses.sendResponse(

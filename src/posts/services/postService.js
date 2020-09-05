@@ -1,5 +1,5 @@
 const { executeQuery } = require('../../mysql/db');
-const logging = require('./../../logging/logging');
+const logging = require('../../logging/logging');
 const userService = require('../../users/services/userService');
 
 exports.createPost = async function (apiReference, opts) {
