@@ -5,9 +5,6 @@ const userController = require('./controllers/userController');
 const auth = require('../auth/auth');
 
 userRoute.post('/login', userValidator.login, userController.login);
-userRoute.get('/logout', auth.verifyToken, (req, res) => {
-  res.clearCookie('access_token');
-  res.status(200).send('LogOut Success');
-});
+userRoute.get('/logout', auth.verifyToken, userController.logout);
 
 exports = module.exports = {userRoute};

@@ -20,7 +20,9 @@ exports.login = async (req, res) => {
     };
 
     jwt.sign({ userDetails }, config.TOKEN_SECRET, { expiresIn: config.SESSION_EXPIRY }, (err, token) => {
-      res.cookie('access_token', token).status(200).send('Success Login');
+      res.cookie('access_token', token)
+      .status(constants.responseFlags.ACTION_COMPLETE)
+      .redirect('/');
     });
   } catch (loginError) {
     logging.logError(apiReference, {EVENT: 'Login Error', ERROR: loginError});
@@ -30,3 +32,8 @@ exports.login = async (req, res) => {
     responses.sendResponse(res, constants.responseMessages.ERROR_IN_EXECUTION, constants.responseFlags.ERROR_IN_EXECUTION);
   }
 };
+
+exports.logout = (req, res) => {
+  res.clearCookie('access_token');
+  res.status(constants.responseFlags.ACTION_COMPLETE).redirect('/login');
+}

@@ -51,9 +51,9 @@ exports.getComments = async function (req, res) {
 
   try {
     let comments = await commentServices.getComments(req.apiReference, {
-      post_id: req.post_id,
-      limit: req.limit,
-      offset: req.offset,
+      post_id: req.body.post_id,
+      limit: req.body.limit,
+      offset: req.body.offset,
     });
     return responses.sendResponse(
       res,

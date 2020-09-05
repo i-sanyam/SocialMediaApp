@@ -52,8 +52,8 @@ exports.getPosts = async function (req, res) {
     let posts = await postServices.getPosts(req.apiReference, {
       user_id: req.userDetails.user_id,
       home_feed: req.body.home_feed,
-      limit: req.limit,
-      offset: req.offset,
+      limit: req.body.limit,
+      offset: req.body.offset,
     });
     return responses.sendResponse(
       res,
