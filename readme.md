@@ -14,3 +14,8 @@ CREATE TABLE `socialdb`.`tb_comments` ( `comment_id` INT NOT NULL AUTO_INCREMENT
 ```sql
 CREATE TABLE `socialdb`.`tb_follow_relationship` ( `relation_id` INT NOT NULL AUTO_INCREMENT , `user_id` INT NOT NULL , `followed_id` INT NOT NULL , `is_followed` BOOLEAN NOT NULL DEFAULT TRUE , `creation_datetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_datetime` DATETIME on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`relation_id`), INDEX (`creation_datetime`), INDEX (`user_id`), INDEX (`followed_id`)) ENGINE = InnoDB;
 ```
+
+### tb_users
+```sql
+CREATE TABLE `socialdb`.`tb_users` ( `user_id` INT NOT NULL AUTO_INCREMENT , `first_name` VARCHAR(50) NOT NULL , `last_name` VARCHAR(50) NULL DEFAULT NULL , `password` TINYTEXT NOT NULL , `username` VARCHAR(40) NOT NULL , `phone` VARCHAR(10) NULL DEFAULT NULL , `email` TINYTEXT NULL DEFAULT NULL , `is_active` BOOLEAN NOT NULL DEFAULT TRUE , `creation_datetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_datetime` DATETIME on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`user_id`), UNIQUE (`username`)) ENGINE = InnoDB;
+```

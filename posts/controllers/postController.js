@@ -26,12 +26,11 @@ exports.createPost =  async function (req, res) {
 exports.likePost = async function (req, res) {
 
   try {
-    req = req.body;
     // to implement tb post like relationship
     await postServices.likePost(req.apiReference, {
-      post_id: req.post_id,
-      liked_by_id: req.userDetails.user_id, // modify, and to implement
-      is_liked: req.is_liked,
+      post_id: req.body.post_id,
+      liked_by_id: req.userDetails.user_id,
+      is_liked: req.body.is_liked,
     });
     return responses.sendResponse(
       res,
@@ -50,10 +49,9 @@ exports.likePost = async function (req, res) {
 exports.getPosts = async function (req, res) {
   
   try {
-    req = req.body;
     let posts = await postServices.getPosts(req.apiReference, {
       user_id: req.userDetails.user_id,
-      home_feed: req.home_feed,
+      home_feed: req.body.home_feed,
       limit: req.limit,
       offset: req.offset,
     });
