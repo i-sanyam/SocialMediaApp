@@ -24,6 +24,8 @@ app.use(cookieParser());
 
 app.use('/css', Express.static(path.resolve('../public/css')));
 app.use('/js', Express.static(path.resolve('../public/js')));
+app.use('/app', Express.static(path.resolve('../public/app')));
+app.use('/components', Express.static(path.resolve('../public/components')));
 
 app.get('/', (req, res) => {
   auth.verifyToken(req, {

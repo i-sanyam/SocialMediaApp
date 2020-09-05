@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Social Media App</title>
+  <link rel="stylesheet" type="text/css" href="./../css/bootstrap.css" />
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+
+    .main {
+      display: flex;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .loginContainer {
+      padding: 2rem;
+      border: 1px solid lightgrey;
+      box-shadow: 5px 5px 1rem 5px lightgrey;
+    }
+
+    .loginHeading {
+      /* text-align: center; */
+    }
+
+    .loginForm {
+      margin-bottom: 5rem;
+    }
+  </style>
+  <script src="../js/axios.js"></script>
+</head>
+
+<body class="container">
+  <main class="main">
+    <div class="loginContainer">
+      <h2 class="loginHeading">Login</h2>
+      <form class="loginForm" id="formLogin1">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" class="form-control" id="username" aria-describedby="usernameHelp"
+            placeholder="Enter username" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" class="form-control" id="password" placeholder="Enter Password" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      <a rel="noopener noreferrer">Don't have an account? Signup</a>
+    </div>
+  </main>
+  <script defer>
+    const onSubmit = (e) => {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      axios.post('/api/user/login', {
+        username, password
+      }).then(d => {
+        console.log(d);
+        if (d.data.status != 200) {window.alert(d.data.message);}
+        else { 
+          window.reload();
+        }
+      }).catch(d => {
+        window.alert("System Error. Try Again!")
+      });
+    }
+    const form = document.getElementById('formLogin1');
+    form.addEventListener('submit', onSubmit);
+  </script>
+</body>
+
+</html>
