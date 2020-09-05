@@ -1,8 +1,8 @@
-import { executeQuery } from '../../mysql/db';
+const { executeQuery } = require('../../mysql/db');
 const logging = require('./../../logging/logging');
 const userService = require('../../users/services/userService');
 
-export async function createPost (apiReference, opts) {
+exports.createPost = async function (apiReference, opts) {
   try {
     await executeQuery(apiReference,
       'INSERT INTO `tb_posts` (author_id, text) VALUES (?, ?)',
@@ -15,7 +15,7 @@ export async function createPost (apiReference, opts) {
   }
 }
 
-export async function likePost (apiReference, opts) {
+exports.likePost = async function (apiReference, opts) {
   try {
     let value = opts.is_liked ? 1 : -1;
     await executeQuery(apiReference,
@@ -30,7 +30,7 @@ export async function likePost (apiReference, opts) {
   }
 }
 
-export async function getPosts (apiReference, opts) {
+exports.getPosts = async function (apiReference, opts) {
   try {
     let sql = 'SELECT FROM `tb_posts` '
     let values = [];

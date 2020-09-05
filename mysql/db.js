@@ -1,4 +1,4 @@
-import { createConnection } from 'mysql2';
+const { createConnection } = require('mysql2');
 
 const logging = require('../logging/logging');
 
@@ -9,7 +9,7 @@ const connection = createConnection({
   database: 'socialdb'
 });
 
-export function executeQuery(apiReference, queryString, params) {
+exports.executeQuery = function (apiReference, queryString, params) {
   return new Promise((resolve, reject) => {
     let query = connection.query(queryString, params, (sqlError, sqlResult) => {
       logging.log(apiReference, {

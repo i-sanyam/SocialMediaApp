@@ -1,6 +1,6 @@
 const db = require('./../../mysql/db');
 
-export async function getUser(apiReference, opts) {
+exports.getUser = async function (apiReference, opts) {
   let sql = `SELECT ${opts.columns || '*'} FROM tb_users WHERE 1=1 `;
   let values = [];
   if (opts.access_token) {
@@ -24,7 +24,7 @@ export async function getUser(apiReference, opts) {
   }
 }
 
-export async function getFollowedUsers(apiReference, user_id) {
+exports.getFollowedUsers = async function (apiReference, user_id) {
   try {
     let results = await db.executeQuery(apiReference,
       'SELECT followed_id FROM `tb_follow_relationship` WHERE user_id = ? AND is_followed = 1',

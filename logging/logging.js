@@ -1,6 +1,6 @@
 const debug = true;
 
-export function log(apiReference, log) {
+exports.log = function (apiReference, log) {
   if (!debug) return;
   try {
     log = JSON.stringify(log);
@@ -8,7 +8,7 @@ export function log(apiReference, log) {
   console.log("-->" + apiReference.module + " :=: " + apiReference.api + " :=: " + log);
 }
 
-export function logError(apiReference, log) {
+exports.logError = function (apiReference, log) {
   if (!debug) return;
   try {
     log = JSON.stringify(log);

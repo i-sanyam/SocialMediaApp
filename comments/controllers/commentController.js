@@ -1,8 +1,8 @@
-const commentServices = require('../services/commmentService');
+const commentServices = require('./../services/commentService');
 const responses = require('../../responses/responses');
 const constants = require('../../properties/constants');
 
-export async function createComment(req, res) {
+exports.createComment = async function (req, res) {
   // verify access token from middleware
   // and get UserDetails in req.
 
@@ -27,7 +27,7 @@ export async function createComment(req, res) {
   }
 }
 
-export async function likeComment(req, res) {
+exports.likeComment = async function (req, res) {
   // verify access token from middleware
   // and get UserDetails in req.
 
@@ -53,7 +53,7 @@ export async function likeComment(req, res) {
   }
 }
 
-export async function getComments(req, res) {
+exports.getComments = async function (req, res) {
   // verify access token from middleware
   // and get UserDetails in req.
 

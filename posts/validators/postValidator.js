@@ -4,7 +4,7 @@ const Joi = require("joi");
 
 const validator = require("./../../validators/vaildator");
 
-export function createPost (req, res, next) {
+exports.createPost = (req, res, next) => {
   req.apiReference = {
     module: fileModule,
     api: 'createPost'
@@ -18,7 +18,7 @@ export function createPost (req, res, next) {
   }
 }
 
-export function likePost (req, res, next) {
+exports.likePost = (req, res, next) => {
   req.apiReference = {
     module: fileModule,
     api: 'likePost'
@@ -33,7 +33,7 @@ export function likePost (req, res, next) {
   }
 }
 
-export function getPosts (req, res, next) {
+exports.getPosts = (req, res, next) => {
   req.apiReference = {
     module: fileModule,
     api: 'getPosts'

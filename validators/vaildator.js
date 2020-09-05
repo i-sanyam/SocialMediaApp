@@ -1,4 +1,4 @@
-const Joi = require('Joi');
+const Joi = require('joi');
 
 const logging = require('../logging/logging');
 const responses = require('../responses/responses');

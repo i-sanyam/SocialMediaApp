@@ -1,7 +1,7 @@
-import { executeQuery } from '../../mysql/db';
+const { executeQuery } = require('../../mysql/db');
 const logging = require('./../../logging/logging');
 
-export async function createComment (apiReference, opts) {
+exports.createComment = async function (apiReference, opts) {
   try {
     await executeQuery(apiReference,
       'INSERT INTO `tb_comments` (author_id, post_id, text) VALUES (?, ?, ?)',
@@ -14,7 +14,7 @@ export async function createComment (apiReference, opts) {
   }
 }
 
-export async function likeComment (apiReference, opts) {
+exports.likeComment = async function (apiReference, opts) {
   try {
     let value = opts.is_liked ? 1 : -1;
     await executeQuery(apiReference,
@@ -29,7 +29,7 @@ export async function likeComment (apiReference, opts) {
   }
 }
 
-export async function getComments (apiReference, opts) {
+exports.getComments = async function (apiReference, opts) {
   try {
     let comments = await executeQuery(apiReference,
       'SELECT FROM `tb_comments` WHERE post_id = ? ORDER BY `creation_datetime` DESC LIMIT ? OFFSET ?',

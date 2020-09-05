@@ -2,7 +2,7 @@ const postServices = require('../services/postService');
 const responses = require('../../responses/responses');
 const constants = require('../../properties/constants');
 
-export async function createPost(req, res) {
+exports.createPost =  async function (req, res) {
   // verify access token from middleware
   // and get UserDetails in req.
 
@@ -25,7 +25,7 @@ export async function createPost(req, res) {
   }
 }
 
-export async function likePost(req, res) {
+exports.likePost = async function (req, res) {
   // verify access token from middleware
   // and get UserDetails in req.
 
@@ -51,7 +51,7 @@ export async function likePost(req, res) {
   }
 }
 
-export async function getPosts(req, res) {
+exports.getPosts = async function (req, res) {
   // verify access token from middleware
   // and get UserDetails in req.
 
