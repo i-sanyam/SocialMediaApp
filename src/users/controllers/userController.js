@@ -59,3 +59,19 @@ exports.signup = async (req, res) => {
     return res.status(constants.responseFlags.ERROR_IN_EXECUTION);
   }
 }
+
+exports.getProfile = async (req, res) => {
+  req.apiReference = {
+    module: 'user',
+    api: 'getProfile'
+  };
+  try {
+    let userDetails = await userService.getUser(req.apiReference, {
+      user_id: req.userDetails.user_id,
+      columns: 'first_name, last_name, username'
+    });
+    return responses.sendResponse(res, constants.responseMessages.ACTION_COMPLETE, constants.responseFlags.ACTION_COMPLETE, userDetails);
+  } catch (profileError) {
+    logging.logError(req.apiReference, {EVENT: "Error in getting user Profile", ERROR: profileError});
+  }
+}
