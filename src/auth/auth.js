@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const responses = require('../../public/responses/responses');
+const responses = require('../responses/responses');
 const constants = require('../properties/constants');
 const config = require('../config/config');
 

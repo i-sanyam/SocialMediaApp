@@ -1,5 +1,5 @@
 const postServices = require('../services/postService');
-const responses = require('../../../public/responses/responses');
+const responses = require('../../responses/responses');
 const constants = require('../../properties/constants');
 
 exports.createPost =  async function (req, res) {

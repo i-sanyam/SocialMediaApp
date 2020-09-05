@@ -1,5 +1,5 @@
 const commentServices = require('../services/commentService');
-const responses = require('../../../public/responses/responses');
+const responses = require('../../responses/responses');
 const constants = require('../../properties/constants');
 
 exports.createComment = async function (req, res) {

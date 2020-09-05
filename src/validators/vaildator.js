@@ -1,7 +1,7 @@
 const Joi = require('joi');
 
 const logging = require('../logging/logging');
-const responses = require('../../public/responses/responses');
+const responses = require('../responses/responses');
 const constants = require('../properties/constants');
 
 exports.validateFields = function (apiReference, schema, req, res) {
