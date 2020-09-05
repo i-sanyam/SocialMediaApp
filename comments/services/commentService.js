@@ -13,3 +13,18 @@ export async function createComment (apiReference, opts) {
     throw new Error();
   }
 }
+
+export async function likeComment (apiReference, opts) {
+  try {
+    let value = opts.is_liked ? 1 : -1;
+    await executeQuery(apiReference,
+      'UPDATE `tb_comments` SET likes = likes + ?  WHERE comment_id = ?',
+      [value, opts.comment_id]
+    );
+    // to implement like comment rlshp
+    return;
+  } catch (sqlError) {
+    logging.logError(apiReference, {EVENT: 'createComment SQL Error', ERROR: sqlError});
+    throw new Error();
+  }
+}
