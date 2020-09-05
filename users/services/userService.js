@@ -22,6 +22,16 @@ export async function getUser(apiReference, opts) {
     logging.logError(apiReference, {EVENT: 'getUser SQL Error', ERROR: sqlError});
     throw new Error();
   }
+}
 
-
+export async function getFollowedUsers(apiReference, user_id) {
+  try {
+    let results = await db.executeQuery(apiReference,
+      'SELECT followed_id FROM `tb_follow_relationship` WHERE user_id = ? AND is_followed = 1',
+      [user_id]);
+    return results;
+  } catch (sqlError) {
+    logging.logError(apiReference, {EVENT: 'getUser SQL Error', ERROR: sqlError});
+    throw new Error();
+  }
 }

@@ -32,3 +32,19 @@ export function likePost (req, res, next) {
     next();
   }
 }
+
+export function getPosts (req, res, next) {
+  req.apiReference = {
+    module: fileModule,
+    api: 'getPosts'
+  }
+  
+  if (validator.validateFields(req.apiReference, Joi.object().keys({
+    access_token    : Joi.string().required(),
+    home_feed       : Joi.boolean().required(),
+    limit           : Joi.number().required(),
+    offset          : Joi.number().required(),
+  }).unknown(true), req.body, res)) {
+    next();
+  }
+}

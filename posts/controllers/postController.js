@@ -50,3 +50,30 @@ export async function likePost(req, res) {
       );
   }
 }
+
+export async function getPosts(req, res) {
+  // verify access token from middleware
+  // and get UserDetails in req.
+
+  try {
+    req = req.body;
+    let posts = await postServices.getPosts(req.apiReference, {
+      user_id: req.user_id,// to modify
+      home_feed: req.home_feed,
+      limit: req.limit,
+      offset: req.offset,
+    });
+    return responses.sendResponse(
+      res,
+      constants.responseMessages.ACTION_COMPLETE,
+      constants.responseFlags.ACTION_COMPLETE,
+      posts
+    );
+  } catch (createPostError) {
+      return responses.sendResponse(
+        res,
+        constants.responseMessages.ERROR_IN_EXECUTION,
+        constants.responseFlags.ERROR_IN_EXECUTION
+      );
+  }
+}
