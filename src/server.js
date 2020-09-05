@@ -5,6 +5,7 @@ const app = Express();
 
 const auth = require('./auth/auth');
 const posts = require('./posts/services/postService');
+const path = require('path');
 
 app.use(Express.json());
 app.use(Express.urlencoded({ extended: true }));
@@ -20,10 +21,11 @@ app.use(cookieParser());
 //   });
 //   // hbs give homepage
 // });
+app.use('/', Express.static(path.resolve('../public/')));
 
 const { Router } = require('./routes');
 app.use('/api', Router);
 
 app.listen(2211, () => {
-  console.log("Server started on localhost:2211")
+  console.log("Server started on localhost:2211");
 });
