@@ -1,6 +1,8 @@
 const Joi = require('Joi');
 
 const logging = require('../logging/logging');
+const responses = require('../responses/responses');
+const constants = require('../properties/constants');
 
 exports.validateFields = function (apiReference, schema, req, res) {
   logging.log(apiReference, {'REQUEST_BODY' : req});
@@ -12,6 +14,7 @@ exports.validateFields = function (apiReference, schema, req, res) {
                     : 'Parameter missing or parameter type is wrong';
      
         logging.logError(apiReference, errorReason);
+        responses.sendResponse(res, errorReason, constants.responseFlags.PARAMETER_MISSING);
         return false;
     }
     return true;
