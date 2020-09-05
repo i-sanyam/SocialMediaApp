@@ -34,3 +34,19 @@ export function likeComment (req, res, next) {
     next();
   }
 }
+
+export function getComments (req, res, next) {
+  req.apiReference = {
+    module: fileModule,
+    api: 'getComments'
+  }
+  
+  if (validator.validateFields(req.apiReference, Joi.object().keys({
+    access_token    : Joi.string().required(),
+    post_id         : Joi.number().required(),
+    limit           : Joi.number().required(),
+    offset          : Joi.number().required(),     
+  }).unknown(true), req.body, res)) {
+    next();
+  }
+}

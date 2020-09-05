@@ -52,3 +52,29 @@ export async function likeComment(req, res) {
       );
   }
 }
+
+export async function getComments(req, res) {
+  // verify access token from middleware
+  // and get UserDetails in req.
+
+  try {
+    req = req.body;
+    let comments = await commentServices.getComments(req.apiReference, {
+      post_id: req.post_id,
+      limit: req.limit,
+      offset: req.offset,
+    });
+    return responses.sendResponse(
+      res,
+      constants.responseMessages.ACTION_COMPLETE,
+      constants.responseFlags.ACTION_COMPLETE,
+      comments
+    );
+  } catch (createPostError) {
+      return responses.sendResponse(
+        res,
+        constants.responseMessages.ERROR_IN_EXECUTION,
+        constants.responseFlags.ERROR_IN_EXECUTION
+      );
+  }
+}

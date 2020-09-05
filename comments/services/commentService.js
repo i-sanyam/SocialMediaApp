@@ -28,3 +28,17 @@ export async function likeComment (apiReference, opts) {
     throw new Error();
   }
 }
+
+export async function getComments (apiReference, opts) {
+  try {
+    let comments = await executeQuery(apiReference,
+      'SELECT FROM `tb_comments` WHERE post_id = ? ORDER BY `creation_datetime` DESC LIMIT ? OFFSET ?',
+      [opts.post_id, opts.limit, opts.offset]
+    );
+    // to implement like comment rlshp
+    return comments;
+  } catch (sqlError) {
+    logging.logError(apiReference, {EVENT: 'createComment SQL Error', ERROR: sqlError});
+    throw new Error();
+  }
+}
