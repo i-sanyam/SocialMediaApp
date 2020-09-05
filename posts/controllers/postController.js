@@ -2,11 +2,12 @@ const postServices = require('../services/postService');
 const responses = require('../../responses/responses');
 const constants = require('../../properties/constants');
 
-function create(req, res) {
-  // verify access token
+export async function createPost(req, res) {
+  // verify access token from middleware
+  // and get UserDetails in req.
 
   try {
-    await postServices.create(req.apiReference, {
+    await postServices.createPost(req.apiReference, {
       text: req.text,
       author_id: author_id
     });

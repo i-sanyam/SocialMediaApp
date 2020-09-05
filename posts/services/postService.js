@@ -1,7 +1,7 @@
 import { executeQuery } from '../../mysql/db';
 const logging = require('./../../logging/logging');
 
-async function createPost (apiReference, opts) {
+export async function createPost (apiReference, opts) {
   try {
     await executeQuery(apiReference,
       'INSERT INTO `tb_posts` (author_id, text) VALUES (?, ?)',

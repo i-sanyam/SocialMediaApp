@@ -5,5 +5,6 @@ const app = Express();
 app.use(Express.json());
 app.use(Express.urlencoded({ extended: true }));
 
-require('./comments');
-require('./posts');
+const {postRoute} = require('./posts/index');
+
+app.use('/posts', postRoute);

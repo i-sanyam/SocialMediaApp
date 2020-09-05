@@ -3,15 +3,13 @@ const fileModule = "posts";
 const Joi = require("joi");
 const validator = require("./../../validators/vaildator");
 
-exports.create = create;
-
-function create (req, res, next) {
+export function createPost (req, res, next) {
   req.apiReference = {
     module: fileModule,
-    api: 'create'
+    api: 'createPost'
   }
   
-  if (validator.validateFields(apiReference, Joi.object().keys({
+  if (validator.validateFields(req.apiReference, Joi.object().keys({
     access_token    : Joi.string().required(),
     text            : Joi.string().required(),
   }).unknown(true), req.body, res)) {
