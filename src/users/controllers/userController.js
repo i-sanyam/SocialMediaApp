@@ -20,14 +20,13 @@ exports.login = async (req, res) => {
     };
 
     jwt.sign({ userDetails }, config.TOKEN_SECRET, { expiresIn: config.SESSION_EXPIRY }, (err, token) => {
-      res.cookie('access_token', token)
-      .status(constants.responseFlags.ACTION_COMPLETE)
-      .send(constants.responseMessages.ACTION_COMPLETE);
+      res.cookie('access_token', token);
+      responses.sendResponse(res, constants.responseMessages.ACTION_COMPLETE, constants.responseFlags.ACTION_COMPLETE);
     });
   } catch (loginError) {
-    logging.logError(apiReference, {EVENT: 'Login Error', ERROR: loginError});
+    logging.logError(req.apiReference, {EVENT: 'Login Error', ERROR: loginError});
     if (loginError.message == constants.responseFlags.LOGIN_ERROR) {
-      return responses.sendResponse(res, constants.responseMessages.LOGIN_ERROR, constants.responseMessages.LOGIN_ERROR);
+      return responses.sendResponse(res, constants.responseMessages.LOGIN_ERROR, constants.responseFlags.LOGIN_ERROR);
       // return res.status(constants.responseFlags.LOGIN_ERROR).redirect('/login'); // LOGIN LOOP
     }
     return responses.sendResponse(res, constants.responseMessages.ERROR_IN_EXECUTION, constants.responseFlags.ERROR_IN_EXECUTION);

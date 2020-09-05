@@ -21,10 +21,39 @@ app.use(cookieParser());
 //   });
 //   // hbs give homepage
 // });
-app.use('/', (req, res, next) => {
-  auth.verifyToken(req, { status: () => { return { send: () => { } } } }, next);
-  // res.send('wait here');
-}, Express.static(path.resolve('../public/')));
+
+app.use('/css', Express.static(path.resolve('../public/css')));
+app.use('/js', Express.static(path.resolve('../public/js')));
+
+app.get('/', (req, res) => {
+  auth.verifyToken(req, {
+    // status: () => {
+    // return {
+    send: () => {
+      return res.redirect('/login');
+    }
+    // }
+    // }
+  }, () => {
+    console.error("passed");
+    return res.sendFile(path.resolve('../public/index.html'));
+  });
+});
+
+app.use('/login', (req, res) => {
+  auth.verifyToken(req, {
+    // status: () => {
+    // return {
+    send: () => {
+      return res.sendFile(path.resolve('./../public/components/login.html'));
+    }
+    // }
+    // }
+  }, () => {
+    console.error("passed");
+    return res.sendFile(path.resolve('../public/index.html'));
+  });
+});
 
 const { Router } = require('./routes');
 app.use('/api', Router);
