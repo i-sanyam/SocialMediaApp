@@ -17,3 +17,18 @@ export function createPost (req, res, next) {
     next();
   }
 }
+
+export function likePost (req, res, next) {
+  req.apiReference = {
+    module: fileModule,
+    api: 'likePost'
+  }
+  
+  if (validator.validateFields(req.apiReference, Joi.object().keys({
+    access_token    : Joi.string().required(),
+    post_id         : Joi.number().required(),
+    is_liked        : Joi.boolean().required(),
+  }).unknown(true), req.body, res)) {
+    next();
+  }
+}
