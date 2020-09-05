@@ -22,7 +22,7 @@ exports.login = async (req, res) => {
     jwt.sign({ userDetails }, config.TOKEN_SECRET, { expiresIn: config.SESSION_EXPIRY }, (err, token) => {
       res.cookie('access_token', token)
       .status(constants.responseFlags.ACTION_COMPLETE)
-      .redirect('/');
+      .send(constants.responseMessages.ACTION_COMPLETE);
     });
   } catch (loginError) {
     logging.logError(apiReference, {EVENT: 'Login Error', ERROR: loginError});
