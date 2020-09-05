@@ -18,7 +18,9 @@ exports.executeQuery = function (apiReference, queryString, params) {
         SQL_RESULT: sqlResult,
         SQL_RESULT_LENGTH: sqlResult && sqlResult.length
       });
-      if (sqlError) return reject({ ERROR: sqlError, QUERY: query.sql });
+      if (sqlError) {
+        return reject({ ERROR: sqlError, QUERY: query.sql });
+      }
       return resolve(sqlResult);
     });
   })

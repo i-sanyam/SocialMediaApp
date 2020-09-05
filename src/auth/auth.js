@@ -15,6 +15,7 @@ exports.verifyToken = (req, res, next) => {
         next();
       });
   } catch (authError) {
-    return res.status(constants.responseFlags.FORBIDDEN).redirect('/login');
+    // return res.status(constants.responseFlags.FORBIDDEN).redirect('/login'); LOGIN LOOP
+    return responses.sendResponse(res, constants.responseMessages.FORBIDDEN, constants.responseFlags.FORBIDDEN);
   }
 }

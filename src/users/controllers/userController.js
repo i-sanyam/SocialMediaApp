@@ -27,11 +27,11 @@ exports.login = async (req, res) => {
   } catch (loginError) {
     logging.logError(apiReference, {EVENT: 'Login Error', ERROR: loginError});
     if (loginError.message == constants.responseFlags.LOGIN_ERROR) {
-      // responses.sendResponse(res, constants.responseMessages.LOGIN_ERROR, constants.responseMessages.LOGIN_ERROR);
-      return res.status(constants.responseFlags.LOGIN_ERROR).redirect('/login');
+      return responses.sendResponse(res, constants.responseMessages.LOGIN_ERROR, constants.responseMessages.LOGIN_ERROR);
+      // return res.status(constants.responseFlags.LOGIN_ERROR).redirect('/login'); // LOGIN LOOP
     }
-    // responses.sendResponse(res, constants.responseMessages.ERROR_IN_EXECUTION, constants.responseFlags.ERROR_IN_EXECUTION);
-    return res.status(constants.responseFlags.ERROR_IN_EXECUTION).redirect('/login');
+    return responses.sendResponse(res, constants.responseMessages.ERROR_IN_EXECUTION, constants.responseFlags.ERROR_IN_EXECUTION);
+    // return res.status(constants.responseFlags.ERROR_IN_EXECUTION).redirect('/login'); // login loop
   }
 };
 
@@ -50,13 +50,13 @@ exports.signup = async (req, res) => {
       password: hash(req.body.password, config.SALT),
       first_name: req.body.first_name,
       username: req.body.username,
-      last_name: req.body.last_name || '',
-      phone: req.body.phone || '',
-      email: req.body.email || '',
+      last_name: req.body.last_name || null,
+      phone: req.body.phone || null,
+      email: req.body.email || null,
     });
-    return res.status(constants.responseFlags.ACTION_COMPLETE).redirect('/login');
+    return res.status(constants.responseFlags.ACTION_COMPLETE).send('Success');
   } catch (signupError) {
     logging.logError(req.apiReference, {EVENT : "User Signup Error", ERROR: signupError.message});
-    return res.status(constants.responseFlags.ERROR_IN_EXECUTION).redirect('/signup');
+    return res.status(constants.responseFlags.ERROR_IN_EXECUTION);
   }
 }

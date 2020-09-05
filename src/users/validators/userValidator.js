@@ -29,7 +29,7 @@ exports.signup = (req, res, next) => {
     last_name   : Joi.string().max(50).optional(),
     username    : Joi.string().max(40).required(),
     password    : Joi.string().required(),
-    email       : Joi.email().optional(),
+    email       : Joi.string().email().optional(),
     phone       : Joi.string().max(10).optional(),
   }).unknown(true), req.body, res)) {
     next();
