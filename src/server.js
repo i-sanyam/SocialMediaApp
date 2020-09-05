@@ -21,7 +21,10 @@ app.use(cookieParser());
 //   });
 //   // hbs give homepage
 // });
-app.use('/', Express.static(path.resolve('../public/')));
+app.use('/', (req, res, next) => {
+  auth.verifyToken(req, { status: () => { return { send: () => { } } } }, next);
+  // res.send('wait here');
+}, Express.static(path.resolve('../public/')));
 
 const { Router } = require('./routes');
 app.use('/api', Router);
