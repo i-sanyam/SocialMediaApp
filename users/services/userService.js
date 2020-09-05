@@ -12,7 +12,12 @@ exports.getUser = async function (apiReference, opts) {
     values.push(opts.user_id);
   }
   if (opts.username) {
-    sql += 'AND username = ? ';
+    sql += ' AND username = ? ';
+    values.push(opts.username);
+  }
+  if (opts.password) {
+    sql += ' AND password = ? ';
+    values.push(opts.password);
   }
 
   try {
