@@ -11,5 +11,6 @@ exports.responseMessages = {
   ACTION_COMPLETE : "Action Complete",
   ERROR_IN_EXECUTION : "Some error in Execution",
   LOGIN_ERROR : "Wrong Username/Password",
-  FORBIDDEN : "FORBIDDEN"
+  FORBIDDEN : "FORBIDDEN",
+  USERNAME_EXISTS : 'Username already taken'
 }

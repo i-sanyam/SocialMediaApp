@@ -11,6 +11,7 @@ app.use(Express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use("/", auth.verifyToken, async (req, res) => { // homepage
+  // i will hit api /api/posts/getPosts
   let posts = await posts.getPosts({
     user_id: req.userDetails.user_id,
     home_feed: true,
