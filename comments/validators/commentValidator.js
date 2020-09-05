@@ -12,7 +12,7 @@ exports.createComment = function (req, res, next) {
   
   if (validator.validateFields(req.apiReference, Joi.object().keys({
     access_token    : Joi.string().required(),
-    text            : Joi.string().required(),
+    text            : Joi.string().max(500, 'utf8').required(),
     post_id         : Joi.number().required(),
   }).unknown(true), req.body, res)) {
     next();

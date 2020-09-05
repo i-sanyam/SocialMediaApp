@@ -6,7 +6,7 @@ const constants = require('../properties/constants');
 
 exports.validateFields = function (apiReference, schema, req, res) {
   logging.log(apiReference, {'REQUEST_BODY' : req});
-  let validation = Joi.validate(req, schema);
+  let validation = schema.validate(req);
     if(validation.error) {
         let errorReason =
                 validation.error.details !== undefined
