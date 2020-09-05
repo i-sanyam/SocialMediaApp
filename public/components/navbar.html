@@ -1,14 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-	<a class="navbar-brand" href="#">SocialMedia</a>
-	<button
-		class="navbar-toggler"
-		type="button"
-		data-toggle="collapse"
-		data-target="#navbarSupportedContent"
-		aria-controls="navbarSupportedContent"
-		aria-expanded="false"
-		aria-label="Toggle navigation"
-	>
+	<a class="navbar-brand" id="profilename" href="#">SocialMedia</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+		aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
 
@@ -21,15 +14,30 @@
 				<a class="nav-link" href="#" data-component="my-posts">Explore</a>
 			</li>
 		</ul>
-		
+
 		<div class="my-2 my-lg-0">
 			<a class="nav-link" href="#">
-				<span
-					id="nav-username"
-					data-component="my-posts"
-					class="font-weight-bold nav-link secondary-text"
-				>username</span
-			></a>
+				<span id="nav-username" data-component="my-posts"
+					class="font-weight-bold nav-link secondary-text">username</span></a>
 		</div>
 	</div>
+	<button display='inline' class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="logout()">
+		Logout
+	</button>
 </nav>
+<script defer>
+	axios.post('/api/user/profile').then(d => {
+		d = d.data.data;
+		document.getElementById('nav-username').innerText = d.username;
+		let nameString = d.first_name + ' ';
+		if (d.last_name && (d.last_name != 'null')) {
+			nameString += d.last_name;
+		}
+		document.getElementById('profilename').innerText = nameString;
+	});
+	const logout = () => {
+		axios.get('/api/user/logout').then(() => {
+			window.open('/', '_self');
+		});
+	}
+</script>

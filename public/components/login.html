@@ -25,10 +25,6 @@
       box-shadow: 5px 5px 1rem 5px lightgrey;
     }
 
-    .loginHeading {
-      /* text-align: center; */
-    }
-
     .loginForm {
       margin-bottom: 5rem;
     }
@@ -63,10 +59,10 @@
       axios.post('/api/user/login', {
         username, password
       }).then(d => {
-        console.log(d);
+        console.log(d.data);
         if (d.data.status != 200) {window.alert(d.data.message);}
         else { 
-          window.reload();
+          return window.open('/', '_self');
         }
       }).catch(d => {
         window.alert("System Error. Try Again!")
