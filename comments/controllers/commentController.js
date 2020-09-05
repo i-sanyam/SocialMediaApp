@@ -1,15 +1,16 @@
-const postServices = require('../services/postService');
+const commentServices = require('../services/commmentService');
 const responses = require('../../responses/responses');
 const constants = require('../../properties/constants');
 
-export async function createPost(req, res) {
+export async function createComment(req, res) {
   // verify access token from middleware
   // and get UserDetails in req.
 
   try {
-    await postServices.createPost(req.apiReference, {
+    await commentServices.createComment(req.apiReference, {
       text: req.body.text,
-      author_id: author_id, // modofy
+      post_id: req.body.post_id,
+      author_id: author_id // modify
     });
     return responses.sendResponse(
       res,
