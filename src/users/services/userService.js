@@ -88,21 +88,23 @@ exports.insertUser = async function (apiReference, opts) {
   }
 }
 
-exports.userFollow = async function (apiReference, user_id) {
+exports.userFollow = async function (apiReference, opts) {
   try {
     let getRelation = await db.executeQuery(apiReference,
       'SELECT * FROM `tb_follow_relationship` WHERE user_id = ? AND followed_id = ?',
       [opts.user_id, opts.requested_id]
     );
     if (_.isEmpty(getRelation)) {
+      console.log(opts, '###');
       await db.executeQuery(apiReference,
         'INSERT INTO `tb_follow_relationship` (user_id,	followed_id, is_followed) VALUES (?,?,?)',
-        [opts.user_id, opts.requested_id, opts.is_follow]);
+        [opts.user_id, opts.requested_id, opts.is_follow ? 1 : 0]);
     } else {
       getRelation = getRelation[0];
       await db.executeQuery(
+        apiReference,
         'UPDATE `tb_follow_relationship` SET is_followed = ? WHERE relation_id = ?',
-        [getRelation.relation_id, opts.is_follow]
+        [opts.is_follow ? 1 : 0, getRelation.relation_id]
       );
     }
     return;

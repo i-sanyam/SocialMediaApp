@@ -1,13 +1,15 @@
+
 async function clickFollowButton(is_follow, requested_id) {    
     let followButton = document.getElementById('followButton');
   // hide button if same user
   console.log('aaaa');
-  await axios.post('/api/user/follow', { is_follow: !!isFollow, requested_id });
+  console.log(is_follow, requested_id);
+  await axios.post('/api/user/follow', { is_follow: !+followButton.value, requested_id: requested_id.toString() });
 
-  if (is_follow == 0) {
+  if (+followButton.value == 0) {
     followButton.value = 1;
     followButton.innerText = "Following";
-  } else if (is_follow == 1) {
+  } else if (+followButton.value == 1) {
     followButton.value = 0;
     followButton.innerText = "Follow"
   }
@@ -22,9 +24,9 @@ async function loadProfile(user_id) {
       $(`<div class="m-2 my-5">
               <article>
                   <div id="header" style="display=inline;">
-                      <h2>${profile.first_name} ${profile.last_name}</h2>
+                      <h2>${profile.first_name} ${profile.last_name !== 'null' ? profile.last_name : '' }</h2>
                       <p>${profile.username}</p>
-                      <button id="followButton" class="btn btn-primary" value="${profile.is_follow}" onclick="clickFollowButton(${profile.is_follow},${user_id})">Follow</button>
+                      <button id="followButton" class="btn btn-primary" value="${profile.is_follow}" onclick="clickFollowButton(${profile.is_follow},${user_id})">${profile.is_follow ? 'Following':'Follow'}</button>
                   </div>
               </article>
           </div>`)

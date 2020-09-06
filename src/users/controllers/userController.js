@@ -79,7 +79,8 @@ exports.getProfile = async (req, res) => {
         profile_id: req.body.user_id,
       });
       if (!_.isEmpty(followStatus)) {
-        userDetails.is_follow = followStatus[0].is_follow;
+        console.log(followStatus);
+        userDetails.is_follow = followStatus[0].is_followed;
       } else {
         userDetails.is_follow = 0;
       }
@@ -102,11 +103,13 @@ exports.getProfile = async (req, res) => {
 
 exports.userFollow = async (req, res) => {
   try {
+    console.log('### Enter')
     await userService.userFollow(req.apiReference, {
       user_id: req.userDetails.user_id,
       is_follow: req.body.is_follow,
       requested_id: req.body.requested_id,
     });
+    console.log('###');
     return responses.sendResponse(res, constants.responseMessages.ACTION_COMPLETE, constants.responseFlags.ACTION_COMPLETE);
   } catch (followError) {
     logging.logError(req.apiReference, {EVENT: "Error in following user", ERROR: followError});
