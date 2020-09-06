@@ -5,6 +5,7 @@ const https = require('https');
 const fs = require('fs');
 const app = Express();
 
+
 const auth = require('./auth/auth');
 const posts = require('./posts/services/postService');
 const path = require('path');
@@ -86,6 +87,8 @@ const server = https.createServer({
   key, cert
 }, app);
 
-server.listen(config.PORT, () => {
+// trying configuring HTTPS but haven't succeded
+
+app.listen(config.PORT, () => {
   console.log(`Server started on localhost:${config.PORT}`);
 });
