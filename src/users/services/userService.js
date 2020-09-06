@@ -2,6 +2,7 @@ const _ = require('underscore');
 
 const db = require('../../mysql/db');
 const logging = require('../../logging/logging');
+const { CP1251_BULGARIAN_CI } = require('mysql2/lib/constants/charsets');
 
 exports.getUser = async function (apiReference, opts) {
   let sql = `SELECT ${opts.columns || '*'} FROM tb_users WHERE 1=1 `;
@@ -34,10 +35,10 @@ exports.getUser = async function (apiReference, opts) {
 
 exports.getFollowedUsers = async function (apiReference, user_id) {
   try {
+    console.log('@@@');
     let results = await db.executeQuery(apiReference,
       'SELECT followed_id FROM `tb_follow_relationship` WHERE user_id = ? AND is_followed = 1',
       [user_id]);
-    if (_.isEmpty(results)) return 0;
     return results;
   } catch (sqlError) {
     logging.logError(apiReference, { EVENT: 'get followed User SQL Error', ERROR: sqlError });
@@ -89,7 +90,7 @@ exports.insertUser = async function (apiReference, opts) {
 
 exports.userFollow = async function (apiReference, user_id) {
   try {
-    let getRelation = await db.executeQuery(
+    let getRelation = await db.executeQuery(apiReference,
       'SELECT * FROM `tb_follow_relationship` WHERE user_id = ? AND followed_id = ?',
       [opts.user_id, opts.requested_id]
     );
@@ -107,6 +108,19 @@ exports.userFollow = async function (apiReference, user_id) {
     return;
   } catch (sqlError) {
     logging.logError(apiReference, { EVENT: 'getUser SQL Error', ERROR: sqlError });
+    throw new Error();
+  }
+}
+
+exports.searchQuery = async function (apiReference, opts) {
+  try {
+    console.log(opts.query);
+    let results = await db.executeQuery(apiReference,
+      `SELECT user_id, username FROM tb_users WHERE concat_ws(' ',first_name, last_name, username) like '%${opts.query}%'`,[]
+    );
+    return results;
+  } catch(sqlError) {
+    logging.logError(apiReference, { EVENT: 'Search SQL Error', ERROR: sqlError });
     throw new Error();
   }
 }

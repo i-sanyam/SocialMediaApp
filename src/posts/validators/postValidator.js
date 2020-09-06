@@ -42,6 +42,7 @@ exports.getPosts = (req, res, next) => {
     home_feed       : Joi.boolean().required(),
     limit           : Joi.number().required(),
     offset          : Joi.number().required(),
+    profile_feed    : Joi.boolean().optional(),
   }).unknown(true), req.body, res)) {
     next();
   }

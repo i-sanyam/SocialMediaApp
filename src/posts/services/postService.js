@@ -2,6 +2,7 @@ const _ = require('underscore');
 const { executeQuery } = require('../../mysql/db');
 const logging = require('../../logging/logging');
 const userService = require('../../users/services/userService');
+const { CP1251_BULGARIAN_CI } = require('mysql2/lib/constants/charsets');
 
 exports.createPost = async function (apiReference, opts) {
   try {
@@ -42,8 +43,13 @@ exports.getPosts = async function (apiReference, opts) {
       sql += ' WHERE p.author_id IN (?) ';
       values.push(user_ids);
     }
+    if (opts.profile_feed) {
+      sql += ' WHERE p.author_id = ? ';
+      values.push(opts.user_id);
+    }
     sql += ' ORDER BY p.creation_datetime DESC LIMIT ? OFFSET ?';
     values.push(opts.limit, opts.offset);
+    console.log(sql);
     let posts = await executeQuery(apiReference, sql, values);
     return posts;
   } catch (sqlError) {

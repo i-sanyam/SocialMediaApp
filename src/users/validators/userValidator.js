@@ -58,6 +58,7 @@ exports.getProfile = (req, res, next) => {
   
   if (validator.validateFields(req.apiReference, Joi.object().keys({
     user_id : Joi.string().optional(),
+    is_posts: Joi.boolean().required(),
   }).unknown(true), req.body, res)) {
     next();
   }

@@ -7,6 +7,7 @@ const userService = require('../services/userService');
 const logging = require('../../logging/logging');
 const responses = require('../../responses/responses');
 const constants = require('../../properties/constants');
+const postService = require('../../posts/services/postService');
 
 exports.login = async (req, res) => {
   try {
@@ -68,7 +69,7 @@ exports.getProfile = async (req, res) => {
   try {
     let userDetails = await userService.getUser(req.apiReference, {
       user_id: (req.body.user_id) ? req.body.user_id: req.userDetails.user_id,
-      columns: 'user_id, first_name, last_name, username'
+      columns: 'user_id, first_name, last_name, username, bio',
     });
     userDetails = userDetails[0];
     userDetails.is_follow = 2; //0 - not 1 - followed, 2 - own account
@@ -78,6 +79,15 @@ exports.getProfile = async (req, res) => {
         profile_id: req.body.user_id,
       });
       userDetails.is_follow = followStatus;
+    }
+    if (req.body.is_posts) {
+        let posts = await postService.getPosts(req.apiReference, {
+          profile_feed: 1,
+          user_id: req.userDetails.user_id,
+          offset: 0,
+          limit: 25
+        });
+        userDetails.posts = posts;
     }
     return responses.sendResponse(res, constants.responseMessages.ACTION_COMPLETE, constants.responseFlags.ACTION_COMPLETE, userDetails);
   } catch (profileError) {
@@ -98,4 +108,25 @@ exports.userFollow = async (req, res) => {
     logging.logError(req.apiReference, {EVENT: "Error in following user", ERROR: followError});
     return responses.sendResponse(res, constants.responseMessages.ERROR_IN_EXECUTION, constants.responseFlags.ERROR_IN_EXECUTION);
   }
+}
+
+exports.searchQuery = async function(req, res) {
+  req.apiReference = {
+    module: 'user',
+    api: 'searchQuery'
+  };
+
+  try {
+    console.log(req.params);
+    if (!req.params.query) throw new Error();
+    let results = await userService.searchQuery(req.apiReference, {
+      query: req.params.query
+    });
+    return responses.sendResponse(res, constants.responseMessages.ACTION_COMPLETE, constants.responseFlags.ACTION_COMPLETE, results);
+
+  } catch(queryError) {
+    logging.logError(req.apiReference, {EVENT: "search query Error", ERROR: queryError});    
+    return responses.sendResponse(res, constants.responseMessages.ERROR_IN_EXECUTION, constants.responseFlags.ERROR_IN_EXECUTION);
+  }
+
 }
