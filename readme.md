@@ -23,5 +23,5 @@ CREATE TABLE `socialdb`.`tb_follow_relationship` ( `relation_id` INT NOT NULL AU
 
 ### tb_users
 ```sql
-CREATE TABLE `socialdb`.`tb_users` ( `user_id` INT NOT NULL AUTO_INCREMENT , `first_name` VARCHAR(50) NOT NULL , `last_name` VARCHAR(50) NULL DEFAULT NULL , `password` TINYTEXT NOT NULL , `username` VARCHAR(40) NOT NULL , `phone` VARCHAR(10) NULL DEFAULT NULL , `email` TINYTEXT NULL DEFAULT NULL , `is_active` BOOLEAN NOT NULL DEFAULT TRUE , `creation_datetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_datetime` DATETIME on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`user_id`), UNIQUE (`username`)) ENGINE = InnoDB;
+CREATE TABLE `socialdb`.`tb_users` ( `user_id` INT NOT NULL AUTO_INCREMENT , `first_name` VARCHAR(50) NOT NULL , `last_name` VARCHAR(50) NULL DEFAULT NULL , `password` TINYTEXT NOT NULL , `username` VARCHAR(40) NOT NULL , `phone` VARCHAR(10) NULL DEFAULT NULL , `email` TINYTEXT NULL DEFAULT NULL ,  `bio` TINYTEXT NULL, `is_active` BOOLEAN NOT NULL DEFAULT TRUE , `creation_datetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_datetime` DATETIME on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`user_id`), UNIQUE (`username`)) ENGINE = InnoDB;
 ```

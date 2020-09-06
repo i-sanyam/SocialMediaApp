@@ -71,6 +71,14 @@ exports.getProfile = async (req, res) => {
       columns: 'user_id, first_name, last_name, username'
     });
     userDetails = userDetails[0];
+    userDetails.is_follow = 2; //0 - not 1 - followed, 2 - own account
+    if (req.body.user_id && req.body.user_id != req.userDetails.user_id) {
+      let followStatus = await userService.getFollowStatus(req.apiReference, {
+        user_id: req.userDetails.user_id,
+        profile_id: req.body.user_id,
+      });
+      userDetails.is_follow = followStatus;
+    }
     return responses.sendResponse(res, constants.responseMessages.ACTION_COMPLETE, constants.responseFlags.ACTION_COMPLETE, userDetails);
   } catch (profileError) {
     logging.logError(req.apiReference, {EVENT: "Error in getting user Profile", ERROR: profileError});

@@ -1,3 +1,5 @@
+const _ = require('underscore');
+
 const db = require('../../mysql/db');
 const logging = require('../../logging/logging');
 
@@ -25,7 +27,7 @@ exports.getUser = async function (apiReference, opts) {
     let results = await db.executeQuery(apiReference, sql, values);
     return results;
   } catch (sqlError) {
-    logging.logError(apiReference, {EVENT: 'getUser SQL Error', ERROR: sqlError});
+    logging.logError(apiReference, { EVENT: 'getUser SQL Error', ERROR: sqlError });
     throw new Error();
   }
 }
@@ -35,9 +37,22 @@ exports.getFollowedUsers = async function (apiReference, user_id) {
     let results = await db.executeQuery(apiReference,
       'SELECT followed_id FROM `tb_follow_relationship` WHERE user_id = ? AND is_followed = 1',
       [user_id]);
+    if (_.isEmpty(results)) return 0;
     return results;
   } catch (sqlError) {
-    logging.logError(apiReference, {EVENT: 'getUser SQL Error', ERROR: sqlError});
+    logging.logError(apiReference, { EVENT: 'get followed User SQL Error', ERROR: sqlError });
+    throw new Error();
+  }
+}
+
+exports.getFollowStatus = async function (apiReference, opts) {
+  try {
+    let results = await db.executeQuery(apiReference,
+      'SELECT * FROM `tb_follow_relationship` WHERE user_id = ? AND followed_id = ?',
+      [opts.user_id, opts.profile_id]);
+    return results;
+  } catch (sqlError) {
+    logging.logError(apiReference, { EVENT: 'get follow status SQL Error', ERROR: sqlError });
     throw new Error();
   }
 }
@@ -64,22 +79,34 @@ exports.insertUser = async function (apiReference, opts) {
     }
     sql += ')';
     valuesql += ')';
-    let results = await db.executeQuery(apiReference, sql+valuesql, values);
+    let results = await db.executeQuery(apiReference, sql + valuesql, values);
     return results;
   } catch (sqlError) {
-    logging.logError(apiReference, {EVENT: 'signUp SQL Error', ERROR: sqlError});
+    logging.logError(apiReference, { EVENT: 'signUp SQL Error', ERROR: sqlError });
     throw new Error();
   }
 }
 
 exports.userFollow = async function (apiReference, user_id) {
   try {
-    let results = await db.executeQuery(apiReference,
-      'INSERT INTO `tb_follow_relationship` (user_id,	followed_id, is_followed) VALUES (?,?,?)',
-      [opts.user_id, opts.requested_id, opts.is_follow]);
-    return results;
+    let getRelation = await db.executeQuery(
+      'SELECT * FROM `tb_follow_relationship` WHERE user_id = ? AND followed_id = ?',
+      [opts.user_id, opts.requested_id]
+    );
+    if (_.isEmpty(getRelation)) {
+      await db.executeQuery(apiReference,
+        'INSERT INTO `tb_follow_relationship` (user_id,	followed_id, is_followed) VALUES (?,?,?)',
+        [opts.user_id, opts.requested_id, opts.is_follow]);
+    } else {
+      getRelation = getRelation[0];
+      await db.executeQuery(
+        'UPDATE `tb_follow_relationship` SET is_followed = ? WHERE relation_id = ?',
+        [getRelation.relation_id, opts.is_follow]
+      );
+    }
+    return;
   } catch (sqlError) {
-    logging.logError(apiReference, {EVENT: 'getUser SQL Error', ERROR: sqlError});
+    logging.logError(apiReference, { EVENT: 'getUser SQL Error', ERROR: sqlError });
     throw new Error();
   }
 }
