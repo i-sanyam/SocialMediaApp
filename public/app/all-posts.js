@@ -5,9 +5,8 @@ async function loadPosts(is_home) {
 			home_feed: is_home, // home or explore
 		});
 		posts = posts.data.data;
-		console.log(posts);
+		console.log(posts); // remove
 		for (const post of posts) {
-			// console.log(post);
 			$("#content").append(
 				$(`<div class="m-2 my-5">
                 <article>

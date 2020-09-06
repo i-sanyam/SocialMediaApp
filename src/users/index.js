@@ -8,5 +8,6 @@ userRoute.post('/login', userValidator.login, userController.login);
 userRoute.get('/logout', auth.verifyToken, userController.logout);
 userRoute.post('/signup', userValidator.signup, userController.signup);
 userRoute.post('/profile', auth.verifyToken, userController.getProfile);
+userRoute.post('/follow', userValidator.userFollow, auth.verifyToken, userController.userFollow);
 
 exports = module.exports = {userRoute};

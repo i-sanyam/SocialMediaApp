@@ -71,3 +71,15 @@ exports.insertUser = async function (apiReference, opts) {
     throw new Error();
   }
 }
+
+exports.userFollow = async function (apiReference, user_id) {
+  try {
+    let results = await db.executeQuery(apiReference,
+      'INSERT INTO `tb_follow_relationship` (user_id,	followed_id, is_followed) VALUES (?,?,?)',
+      [opts.user_id, opts.requested_id, opts.is_follow]);
+    return results;
+  } catch (sqlError) {
+    logging.logError(apiReference, {EVENT: 'getUser SQL Error', ERROR: sqlError});
+    throw new Error();
+  }
+}

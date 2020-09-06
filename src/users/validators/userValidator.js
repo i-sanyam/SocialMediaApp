@@ -35,3 +35,17 @@ exports.signup = (req, res, next) => {
     next();
   }
 }
+
+exports.userFollow = (req, res, next) => {
+  req.apiReference = {
+    module: fileModule,
+    api: 'follow'
+  }
+  
+  if (validator.validateFields(req.apiReference, Joi.object().keys({
+    is_follow    : Joi.boolean().required(),
+    requested_id : Joi.string().required(),
+  }).unknown(true), req.body, res)) {
+    next();
+  }
+}

@@ -74,5 +74,20 @@ exports.getProfile = async (req, res) => {
     return responses.sendResponse(res, constants.responseMessages.ACTION_COMPLETE, constants.responseFlags.ACTION_COMPLETE, userDetails);
   } catch (profileError) {
     logging.logError(req.apiReference, {EVENT: "Error in getting user Profile", ERROR: profileError});
+    return responses.sendResponse(res, constants.responseMessages.ERROR_IN_EXECUTION, constants.responseFlags.ERROR_IN_EXECUTION);
+  }
+}
+
+exports.userFollow = async (req, res) => {
+  try {
+    await userService.userFollow(req.apiReference, {
+      user_id: req.userDetails.user_id,
+      is_follow: req.body.is_follow,
+      requested_id: req.body.requested_id,
+    });
+    return responses.sendResponse(res, constants.responseMessages.ACTION_COMPLETE, constants.responseFlags.ACTION_COMPLETE);
+  } catch (followError) {
+    logging.logError(req.apiReference, {EVENT: "Error in following user", ERROR: followError});
+    return responses.sendResponse(res, constants.responseMessages.ERROR_IN_EXECUTION, constants.responseFlags.ERROR_IN_EXECUTION);
   }
 }
