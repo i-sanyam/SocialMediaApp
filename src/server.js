@@ -1,11 +1,18 @@
 const Express = require("express");
 const cookieParser = require('cookie-parser')
 
+const https = require('https');
+const fs = require('fs');
 const app = Express();
 
 const auth = require('./auth/auth');
 const posts = require('./posts/services/postService');
 const path = require('path');
+
+const key = fs.readFileSync(__dirname + '../selfsigned.key');
+const cert = fs.readFileSync(__dirname + '../selfsigned.crt');
+
+const config = require('./config/config');
 
 app.use(Express.json());
 app.use(Express.urlencoded({ extended: true }));
@@ -75,6 +82,10 @@ app.use('/signup', (req, res) => {
 const { Router } = require('./routes');
 app.use('/api', Router);
 
-app.listen(2211, () => {
-  console.log("Server started on localhost:2211");
+const server = https.createServer({
+  key, cert
+}, app);
+
+server.listen(config.PORT, () => {
+  console.log(`Server started on localhost:${config.PORT}`);
 });
