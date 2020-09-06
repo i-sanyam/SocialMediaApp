@@ -16,9 +16,6 @@
 			<li class="nav-item active">
 				<a class="nav-link" href="#" data-component="write-post">Write Post</a>
 			</li>
-			<li class="nav-item active">
-				<a class="nav-link" href="#" data-component="profile-page">Profile Demo</a>
-			</li>
 		</ul>
 		<form id="searchForm" class="form-inline">
 			<input
@@ -91,21 +88,5 @@
 			});
 		}
 	});
-	$('#followButton').on('click', async (ev) => {
-  console.log("@@");
-  const requestedId = ev.target.getAttribute("data-component");
-  const isFollow = ev.target.getAttribute('value');
-  console.log('aaaa');
-  console.log(isFollow, requestedId);
-  await axios.post('/api/user/follow', {is_follow: isFollow, requested_id: requestedId});
-
-  if (isFollow == 0) {
-    followButton.value = 1;
-    followButton.innerText = "Following";
-  } else if (isFollow == 1) {
-    followButton.value = 0;
-    followButton.innerText = "Follow"
-  }
-});
 </script>
 <script src="./app/profile-page.js" />
