@@ -9,8 +9,8 @@ const auth = require('./auth/auth');
 const posts = require('./posts/services/postService');
 const path = require('path');
 
-const key = fs.readFileSync(path.resolve('/../selfsigned.key'));
-const cert = fs.readFileSync(path.resolve('/../selfsigned.crt'));
+const key = fs.readFileSync(path.resolve('../server-key.pem'));
+const cert = fs.readFileSync(path.resolve('../server-cert.pem'));
 
 const config = require('./config/config');
 
