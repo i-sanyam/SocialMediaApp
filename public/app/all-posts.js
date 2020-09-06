@@ -15,10 +15,7 @@ async function loadPosts(is_home) {
                         <h2>${post.title}</h2>
                         <h5 class="text-muted">by ${post.first_name}</h5>
                         <p>
-                            ${post.text.substr(
-															0,
-															200
-														)}... <a href="">read more</a>
+                            ${post.text}
                         </p>
                     </div>
                 </article>

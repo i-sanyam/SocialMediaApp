@@ -24,7 +24,7 @@ async function loadProfile(user_id) {
       $(`<div class="m-2 my-5">
               <article>
                   <div id="header" style="display=inline;">
-                      <h2>${profile.first_name} ${profile.last_name !== 'null' ? profile.last_name : '' }</h2>
+                      <h2>${profile.first_name} ${profile.last_name ? profile.last_name : '' }</h2>
                       <p>${profile.username}</p>
                       <button id="followButton" class="btn btn-primary" value="${profile.is_follow}" onclick="clickFollowButton(${profile.is_follow},${user_id})">${profile.is_follow ? 'Following':'Follow'}</button>
                   </div>

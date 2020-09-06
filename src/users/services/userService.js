@@ -118,7 +118,7 @@ exports.searchQuery = async function (apiReference, opts) {
   try {
     console.log(opts.query);
     let results = await db.executeQuery(apiReference,
-      `SELECT user_id, username FROM tb_users WHERE concat_ws(' ',first_name, last_name, username) like '%${opts.query}%'`,[]
+      `SELECT user_id, username, first_name FROM tb_users WHERE concat_ws(' ',first_name, last_name, username) like '%${opts.query}%'`,[]
     );
     return results;
   } catch(sqlError) {

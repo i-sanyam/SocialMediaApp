@@ -35,3 +35,12 @@
 	border-bottom: 1px solid lightgrey;
 	cursor: pointer;
 }
+
+#resultsContainer > span {
+	padding: 5px;
+	cursor: pointer;
+	position: absolute;
+	z-index: 2;
+	right: 1px;
+	top: 2px;
+}

@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-	<a class="navbar-brand" id="profilename" href="#">SocialMedia</a>
+	<a class="navbar-brand" id="profilename" href="#">Social Media</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
 		aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
@@ -28,7 +28,8 @@
 				Search
 			</button>
 		</form>
-		<div id="resultsContainer" class="hide"></div>
+		<div id="resultsContainer" style="display: none">
+		</div>
 		<div class="my-2 my-lg-0">
 			<a class="nav-link" href="#">
 				<span id="nav-username" data-component="my-posts"
@@ -49,12 +50,13 @@
 	axios.post('/api/user/profile', {is_posts: false}).then(d => {
 		console.log(d.data);
 		d = d.data.data;
-		document.getElementById('nav-username').innerText = d.username;
+		
 		let nameString = d.first_name + ' ';
 		if (d.last_name && (d.last_name != 'null')) { 
 			nameString += d.last_name;
 		}
-		document.getElementById('profilename').innerText = nameString;
+		document.getElementById('nav-username').innerText = nameString;
+		// document.getElementById('profilename').innerText = nameString;
 	});
 	const logout = () => {
 		axios.get('/api/user/logout').then(() => {
@@ -65,8 +67,18 @@
 <script defer>
 	$("#searchForm").submit(async (e) => {
 		e.preventDefault();
+		const resultsContainer = document.querySelector('#resultsContainer');
+		const span = document.createElement('span');
+		span.id = 'hideResultsContainer';
+		span.innerHTML = '&#10060;';
+		span.onclick = () => {
+			resultsContainer.style.display = 'none';
+		}
 
 		$("#resultsContainer").empty();
+		document.querySelector('#resultsContainer').appendChild(span);
+		// $("#resultsContainer").append($(`<span id = "hideResultsContainer">&#10060;</span>`));
+
 
 		const input = $(".searchInput")[0].value || '';
 
@@ -78,15 +90,24 @@
 		const users = response.data;
 
 		if (users.length) {
-			// $("#resultsContainer").toggleClass('hide');
+			const resultsContainer = document.querySelector('#resultsContainer');
+			resultsContainer.style.display = 'block';
+
 			const usersElement = users.map(user => {
 				$("#resultsContainer").append(
 					$(`<div onclick=loadProfile(${user.user_id})>
 						${user.username}
+						<br />
+						${user.first_name}
 						</div>`)
 					);
 			});
 		}
 	});
+
+ $('#hideResultsContainer').on('click', (e) => {
+	 console.log('ajahvfdblj');
+ });
+	
 </script>
 <script src="./app/profile-page.js" />
