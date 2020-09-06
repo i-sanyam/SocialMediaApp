@@ -5,6 +5,7 @@ async function loadPosts(is_home) {
 			home_feed: is_home, // home or explore
 		});
 		posts = posts.data.data;
+		console.log(posts);
 		for (const post of posts) {
 			// console.log(post);
 			$("#content").append(
@@ -12,9 +13,9 @@ async function loadPosts(is_home) {
                 <article>
                     <div id="header">
                         <h2>${post.title}</h2>
-                        <h5 class="text-muted">by ${post.user.username}</h5>
+                        <h5 class="text-muted">by ${post.first_name}</h5>
                         <p>
-                            ${post.body.substr(
+                            ${post.text.substr(
 															0,
 															200
 														)}... <a href="">read more</a>

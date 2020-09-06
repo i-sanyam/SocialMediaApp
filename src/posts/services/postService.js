@@ -6,8 +6,8 @@ const userService = require('../../users/services/userService');
 exports.createPost = async function (apiReference, opts) {
   try {
     await executeQuery(apiReference,
-      'INSERT INTO `tb_posts` (author_id, text) VALUES (?, ?)',
-    [opts.author_id, opts.text]
+      'INSERT INTO `tb_posts` (author_id, title, text) VALUES (?, ?, ?)',
+    [opts.author_id, opts.title, opts.text]
     );
     return;
   } catch (sqlError) {
@@ -33,16 +33,16 @@ exports.likePost = async function (apiReference, opts) {
 
 exports.getPosts = async function (apiReference, opts) {
   try {
-    let sql = 'SELECT * FROM `tb_posts` '
+    let sql = 'SELECT p.post_id, p.author_id, u.first_name, p.title, p.text, p.creation_datetime, p.updated_datetime FROM `tb_posts` p INNER JOIN tb_users u on u.user_id = p.author_id ';
     let values = [];
     if (opts.home_feed) {
       // fetch only followed user posts
       let user_ids = await userService.getFollowedUsers(apiReference, opts.user_id);
-      if (_.isEmpty(user_ids)) return [];
-      sql += ' WHERE author_id IN (?) ';
+      user_ids.push(opts.user_id);
+      sql += ' WHERE p.author_id IN (?) ';
       values.push(user_ids);
     }
-    sql += ' ORDER BY `creation_datetime` DESC LIMIT ? OFFSET ?';
+    sql += ' ORDER BY p.creation_datetime DESC LIMIT ? OFFSET ?';
     values.push(opts.limit, opts.offset);
     let posts = await executeQuery(apiReference, sql, values);
     return posts;

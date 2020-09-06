@@ -11,7 +11,8 @@ exports.createPost = (req, res, next) => {
   }
   
   if (validator.validateFields(req.apiReference, Joi.object().keys({
-    text            : Joi.string().max(500, 'utf8').required(),
+    title           : Joi.string().min(10, 'utf8').max(200, 'utf8').required(),
+    text            : Joi.string().min(20, 'utf8').max(500, 'utf8').required(),
   }).unknown(true), req.body, res)) {
     next();
   }

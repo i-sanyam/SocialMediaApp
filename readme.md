@@ -1,8 +1,14 @@
+## Startup
+
+```terminal
+$ npm start
+```
+
 ## TABLES in DB
 
 ### tb_posts
 ```sql
-CREATE TABLE `socialdb`.`tb_posts` ( `post_id` INT NOT NULL AUTO_INCREMENT , `author_id` INT NOT NULL , `text` TEXT NOT NULL , `no_likes` INT NOT NULL DEFAULT '0' , `no_comments` INT NOT NULL DEFAULT '0' , `is_deleted` BOOLEAN NOT NULL DEFAULT FALSE , `creation_datetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_datetime` DATETIME on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`post_id`), INDEX (`creation_datetime`), INDEX (`author_id`)) ENGINE = InnoDB;
+CREATE TABLE `socialdb`.`tb_posts` ( `post_id` INT NOT NULL AUTO_INCREMENT , `author_id` INT NOT NULL , `title` TINYTEXT NOT NULL,`text` TEXT NOT NULL , `no_likes` INT NOT NULL DEFAULT '0' , `no_comments` INT NOT NULL DEFAULT '0' , `is_deleted` BOOLEAN NOT NULL DEFAULT FALSE , `creation_datetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_datetime` DATETIME on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`post_id`), INDEX (`creation_datetime`), INDEX (`author_id`), FULLTEXT (`title`)) ENGINE = InnoDB;
 ```
 
 ### tb_comments

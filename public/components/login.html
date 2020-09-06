@@ -59,7 +59,7 @@
       axios.post('/api/user/login', {
         username, password
       }).then(d => {
-        console.log(d.data);
+        // console.log(d.data);
         if (d.data.status != 200) {window.alert(d.data.message);}
         else { 
           return window.open('/', '_self');

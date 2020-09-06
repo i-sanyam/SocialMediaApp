@@ -6,6 +6,7 @@ exports.createPost =  async function (req, res) {
 
   try {
     await postServices.createPost(req.apiReference, {
+      title: req.body.title,
       text: req.body.text,
       author_id: req.userDetails.user_id,
     });
