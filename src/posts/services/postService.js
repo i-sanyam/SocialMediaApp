@@ -1,3 +1,4 @@
+const _ = require('underscore');
 const { executeQuery } = require('../../mysql/db');
 const logging = require('../../logging/logging');
 const userService = require('../../users/services/userService');
@@ -36,7 +37,8 @@ exports.getPosts = async function (apiReference, opts) {
     let values = [];
     if (opts.home_feed) {
       // fetch only followed user posts
-      let user_ids = await getFollowedUsers(apiReference, opts.user_id);
+      let user_ids = await userService.getFollowedUsers(apiReference, opts.user_id);
+      if (_.isEmpty(user_ids)) return [];
       sql += ' WHERE author_id IN (?) ';
       values.push(user_ids);
     }
@@ -45,7 +47,7 @@ exports.getPosts = async function (apiReference, opts) {
     let posts = await executeQuery(apiReference, sql, values);
     return posts;
   } catch (sqlError) {
-    logging.logError(apiReference, {EVENT: 'createComment SQL Error', ERROR: sqlError});
+    logging.logError(apiReference, {EVENT: 'getPosts SQL Error', ERROR: sqlError});
     throw new Error();
   }
 }

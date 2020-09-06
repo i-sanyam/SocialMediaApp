@@ -14,14 +14,24 @@
 				<a class="nav-link" href="#" data-component="my-posts">Explore</a>
 			</li>
 		</ul>
-
+		<form class="form-inline">
+			<input
+				class="form-control mr-sm-2"
+				type="search"
+				placeholder="Search"
+				aria-label="Search"
+			/>
+			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+				Search
+			</button>
+		</form>
 		<div class="my-2 my-lg-0">
 			<a class="nav-link" href="#">
 				<span id="nav-username" data-component="my-posts"
 					class="font-weight-bold nav-link secondary-text">username</span></a>
 		</div>
 	</div>
-	<button display='inline' class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="logout()">
+	<button display='inline' class="btn btn-outline-danger my-2 my-sm-0" type="submit" onclick="logout()">
 		Logout
 	</button>
 </nav>
