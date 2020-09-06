@@ -78,7 +78,11 @@ exports.getProfile = async (req, res) => {
         user_id: req.userDetails.user_id,
         profile_id: req.body.user_id,
       });
-      userDetails.is_follow = followStatus;
+      if (!_.isEmpty(followStatus)) {
+        userDetails.is_follow = followStatus[0].is_follow;
+      } else {
+        userDetails.is_follow = 0;
+      }
     }
     if (req.body.is_posts) {
         let posts = await postService.getPosts(req.apiReference, {

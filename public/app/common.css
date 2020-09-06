@@ -13,3 +13,25 @@
 #body {
 	height: 2000px;
 }
+
+#navbarSupportedContent {
+	position: relative;
+}
+#resultsContainer {
+	position: absolute;
+	border: 1px solid #f8f9fa;
+	background-color: #f8f9fa;
+	border-radius: 5px;
+	top: 70px;
+	right: 100px;
+	width: 270px;
+	height: 300px;
+	overflow-y: auto;
+}
+
+#resultsContainer > div{
+	width: 100%;
+	padding: 10px;
+	border-bottom: 1px solid lightgrey;
+	cursor: pointer;
+}

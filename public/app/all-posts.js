@@ -4,6 +4,7 @@ async function loadPosts(is_home) {
 			offset: 0,
 			home_feed: is_home, // home or explore
 		});
+		console.log(posts.data)
 		posts = posts.data.data;
 		console.log(posts); // remove
 		for (const post of posts) {

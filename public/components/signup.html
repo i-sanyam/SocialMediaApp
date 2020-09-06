@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Social Media App</title>
+  <link rel="stylesheet" type="text/css" href="./../css/bootstrap.css" />
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+
+    .main {
+      display: flex;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .loginContainer {
+      padding: 2rem;
+      border: 1px solid lightgrey;
+      box-shadow: 5px 5px 1rem 5px lightgrey;
+    }
+
+    .signupForm {
+      margin-bottom: 5rem;
+    }
+  </style>
+  <script src="../js/axios.js"></script>
+</head>
+
+<body class="container">
+  <main class="main">
+    <div class="signup-form">
+      <form class="signupForm" id = "formSign">
+        <h2>Sign Up</h2>
+        <p>Please fill in this form to create an account!</p>
+        <hr />
+        <div class="form-group">
+          <div class="row">
+            <div class="col">
+              <input
+                type="text"
+                class="form-control"
+                name="first_name"
+                placeholder="First Name"
+                required="required"
+                id="first_name"
+              />
+            </div>
+            <div class="col">
+              <input
+                type="text"
+                class="form-control"
+                name="last_name"
+                placeholder="Last Name"
+                id="last_name"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <input
+            type="username"
+            class="form-control"
+            name="username"
+            placeholder="Username"
+            required="required"
+            id = "username"
+          />
+        </div>
+        <div class="form-group">
+          <input
+            type="password"
+            class="form-control"
+            name="password"
+            placeholder="Password"
+            required="required"
+            id="password"
+          />
+        </div>
+        <div class="form-group">
+          <input
+            type="password"
+            class="form-control"
+            name="confirm_password"
+            placeholder="Confirm Password"
+            required="required"
+            id="confirm_password"
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-check-label"
+            ><input type="checkbox" required="required" /> I accept the
+            <a href="#">Terms of Use</a> &amp;
+            <a href="#">Privacy Policy</a></label
+          >
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary btn-lg">
+            Sign Up
+          </button>
+        </div>
+      </form>
+      <div class="hint-text">
+        Already have an account? <a href="/login">Login here</a>
+      </div>
+    </div>
+  </main>
+  <script defer>
+    const onSubmit = (e) => {
+      e.preventDefault();
+      
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const c_password = document.getElementById('confirm_password').value;
+      const first_name = document.getElementById('first_name').value;
+      const last_name = document.getElementById('last_name').value || '';
+      if (password != c_password) {
+        window.alert("Passwords do not match");
+        return;
+      }
+      // console.log(first_name, last_name, username, password);
+      axios.post('/api/user/signup', {
+        first_name, last_name, username, password
+      }).then(d => {
+        // console.log(d.data);
+        if (d.data.status != 200) {window.alert(d.data.message);}
+        else { 
+          return window.open('/', '_self');
+        }
+      }).catch(d => {
+        window.alert("System Error. Try Again!")
+      });
+    }
+    const form = document.getElementById('formSign');
+    form.addEventListener('submit', onSubmit);
+  </script>
+</body>
+
+</html>

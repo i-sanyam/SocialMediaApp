@@ -20,9 +20,9 @@
 				<a class="nav-link" href="#" data-component="profile-page">Profile Demo</a>
 			</li>
 		</ul>
-		<form class="form-inline">
+		<form id="searchForm" class="form-inline">
 			<input
-				class="form-control mr-sm-2"
+				class="searchInput form-control mr-sm-2"
 				type="search"
 				placeholder="Search"
 				aria-label="Search"
@@ -31,6 +31,7 @@
 				Search
 			</button>
 		</form>
+		<div id="resultsContainer" class="hide"></div>
 		<div class="my-2 my-lg-0">
 			<a class="nav-link" href="#">
 				<span id="nav-username" data-component="my-posts"
@@ -48,11 +49,12 @@
 });
 </script>
 <script defer>
-	axios.post('/api/user/profile').then(d => {
+	axios.post('/api/user/profile', {is_posts: false}).then(d => {
+		console.log(d.data);
 		d = d.data.data;
 		document.getElementById('nav-username').innerText = d.username;
 		let nameString = d.first_name + ' ';
-		if (d.last_name && (d.last_name != 'null')) {
+		if (d.last_name && (d.last_name != 'null')) { 
 			nameString += d.last_name;
 		}
 		document.getElementById('profilename').innerText = nameString;
@@ -63,3 +65,47 @@
 		});
 	}
 </script>
+<script defer>
+	$("#searchForm").submit(async (e) => {
+		e.preventDefault();
+
+		$("#resultsContainer").empty();
+
+		const input = $(".searchInput")[0].value || '';
+
+		if (input.length < 3) {
+			return;
+		}
+
+		const { data: response } = await axios.get(`/api/user/search/${input}`);
+		const users = response.data;
+
+		if (users.length) {
+			// $("#resultsContainer").toggleClass('hide');
+			const usersElement = users.map(user => {
+				$("#resultsContainer").append(
+					$(`<div onclick=loadProfile(${user.user_id})>
+						${user.username}
+						</div>`)
+					);
+			});
+		}
+	});
+	$('#followButton').on('click', async (ev) => {
+  console.log("@@");
+  const requestedId = ev.target.getAttribute("data-component");
+  const isFollow = ev.target.getAttribute('value');
+  console.log('aaaa');
+  console.log(isFollow, requestedId);
+  await axios.post('/api/user/follow', {is_follow: isFollow, requested_id: requestedId});
+
+  if (isFollow == 0) {
+    followButton.value = 1;
+    followButton.innerText = "Following";
+  } else if (isFollow == 1) {
+    followButton.value = 0;
+    followButton.innerText = "Follow"
+  }
+});
+</script>
+<script src="./app/profile-page.js" />
