@@ -1,8 +1,8 @@
-async function loadPosts() {
+async function loadPosts(is_home) {
 		let posts = await axios.post('/api/post/get', {
 			limit: 25,
 			offset: 0,
-			home_feed: true, // home or explore
+			home_feed: is_home, // home or explore
 		});
 		posts = posts.data.data;
 		for (const post of posts) {

@@ -8,10 +8,10 @@
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
 			<li class="nav-item active">
-				<a class="nav-link" href="#" data-component="all-posts">Home</a>
+				<a class="nav-link" href="#" data-component="my-posts">Home</a>
 			</li>
 			<li class="nav-item active">
-				<a class="nav-link" href="#" data-component="my-posts">Explore</a>
+				<a class="nav-link" href="#" data-component="all-posts">Explore</a>
 			</li>
 		</ul>
 		<form class="form-inline">
@@ -35,6 +35,12 @@
 		Logout
 	</button>
 </nav>
+<script defer>
+	$(".nav-link").click((ev) => {
+	const component = ev.target.getAttribute("data-component");
+	$("#body").load(`./components/${component}.html`);
+});
+</script>
 <script defer>
 	axios.post('/api/user/profile').then(d => {
 		d = d.data.data;

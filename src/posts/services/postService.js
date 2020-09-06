@@ -33,7 +33,7 @@ exports.likePost = async function (apiReference, opts) {
 
 exports.getPosts = async function (apiReference, opts) {
   try {
-    let sql = 'SELECT FROM `tb_posts` '
+    let sql = 'SELECT * FROM `tb_posts` '
     let values = [];
     if (opts.home_feed) {
       // fetch only followed user posts
