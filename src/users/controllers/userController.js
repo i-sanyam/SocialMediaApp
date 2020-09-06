@@ -54,7 +54,7 @@ exports.signup = async (req, res) => {
       phone: req.body.phone || null,
       email: req.body.email || null,
     });
-    return res.status(constants.responseFlags.ACTION_COMPLETE).send('Success');
+    return responses.sendResponse(res, constants.responseMessages.ACTION_COMPLETE, constants.responseFlags.ACTION_COMPLETE);
   } catch (signupError) {
     logging.logError(req.apiReference, {EVENT : "User Signup Error", ERROR: signupError.message});
     return res.status(constants.responseFlags.ERROR_IN_EXECUTION);

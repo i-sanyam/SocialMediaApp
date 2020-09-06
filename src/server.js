@@ -57,6 +57,21 @@ app.use('/login', (req, res) => {
   });
 });
 
+app.use('/signup', (req, res) => {
+  auth.verifyToken(req, {
+    // status: () => {
+    // return {
+    send: () => {
+      return res.sendFile(path.resolve('./../public/components/signup.html'));
+    }
+    // }
+    // }
+  }, () => {
+    console.error("passed");
+    return res.sendFile(path.resolve('../public/index.html'));
+  });
+});
+
 const { Router } = require('./routes');
 app.use('/api', Router);
 
