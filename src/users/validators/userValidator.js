@@ -49,3 +49,16 @@ exports.userFollow = (req, res, next) => {
     next();
   }
 }
+
+exports.getProfile = (req, res, next) => {
+  req.apiReference = {
+    module: fileModule,
+    api: 'getProfile'
+  };
+  
+  if (validator.validateFields(req.apiReference, Joi.object().keys({
+    user_id : Joi.string().optional(),
+  }).unknown(true), req.body, res)) {
+    next();
+  }
+}

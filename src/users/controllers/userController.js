@@ -67,8 +67,8 @@ exports.getProfile = async (req, res) => {
   };
   try {
     let userDetails = await userService.getUser(req.apiReference, {
-      user_id: req.userDetails.user_id,
-      columns: 'first_name, last_name, username'
+      user_id: (req.body.user_id) ? req.body.user_id: req.userDetails.user_id,
+      columns: 'user_id, first_name, last_name, username'
     });
     userDetails = userDetails[0];
     return responses.sendResponse(res, constants.responseMessages.ACTION_COMPLETE, constants.responseFlags.ACTION_COMPLETE, userDetails);

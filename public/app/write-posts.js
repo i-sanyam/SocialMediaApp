@@ -25,11 +25,12 @@ $(() => {
 		
 		if (!passTest) return;
 		axios.post('/api/post/create', {title, text: body}).then(d => {
-			d = d.data;
-			console.log(data);
+			// d = d.data;
+			// console.log(d);
+			window.open('/', '_self');
 		}).catch(d => {
 			d = d.data;
-			console.log(data);
+			console.log(d);
 			window.alert('System Error! Try Again.');
 		});
 	});
