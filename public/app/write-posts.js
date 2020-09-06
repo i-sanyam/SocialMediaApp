@@ -15,7 +15,7 @@ $(() => {
 			titleAlert.style.display = "none";
 			passTest &= true;
 		}
-		if (body.length < 20) {
+		if (body.length < 20 || body.length > 500) {
 			postAlert.style.display = "block";
 			passTest &= false;
 		} else {
