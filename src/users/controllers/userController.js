@@ -93,8 +93,8 @@ exports.getProfile = async (req, res) => {
         let posts = await postService.getPosts(req.apiReference, {
           profile_feed: 1,
           user_id: req.body.user_id,
-          offset: 0,
-          limit: 25
+          offset: req.body.offset || 0,
+          limit: req.body.limit || 25,
         });
         userDetails.posts = posts;
     }
