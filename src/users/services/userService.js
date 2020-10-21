@@ -102,14 +102,15 @@ exports.userFollow = async function (apiReference, opts) {
       console.log(opts, '###');
       await db.executeQuery(apiReference,
         'INSERT INTO `tb_follow_relationship` (user_id,	followed_id, is_followed) VALUES (?,?,?)',
-        [opts.user_id, opts.to_follow_user_id, opts.is_follow ? 1 : 0]);
+        [opts.user_id, opts.to_follow_user_id, opts.is_follow]);
     } else {
       getRelation = getRelation[0];
+      console.log(opts, '###');
       if (getRelation.is_followed != opts.is_follow) {
         await db.executeQuery(
           apiReference,
           'UPDATE `tb_follow_relationship` SET is_followed = ? WHERE relation_id = ?',
-          [opts.is_follow ? 1 : 0, getRelation.relation_id]
+          [opts.is_follow, getRelation.relation_id]
         );
       }
     }
@@ -124,7 +125,7 @@ exports.searchQuery = async function (apiReference, opts) {
   try {
     console.log(opts.query);
     let results = await db.executeQuery(apiReference,
-      `SELECT user_id, username, first_name FROM tb_users WHERE concat_ws(' ',first_name, last_name, username) like '%${opts.query}%'`,[]
+      `SELECT user_id, username, first_name, last_name, is_private, bio FROM tb_users WHERE concat_ws(' ',first_name, last_name, username) like '%${opts.query}%'`,[]
     );
     return results;
   } catch(sqlError) {

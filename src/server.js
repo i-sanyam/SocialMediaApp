@@ -1,7 +1,7 @@
 const Express = require("express");
 const cookieParser = require('cookie-parser')
 
-const https = require('https');
+// const https = require('https');
 const fs = require('fs');
 const app = Express();
 
@@ -10,8 +10,8 @@ const auth = require('./auth/auth');
 const posts = require('./posts/services/postService');
 const path = require('path');
 
-const key = fs.readFileSync(path.resolve('../server-key.pem'));
-const cert = fs.readFileSync(path.resolve('../server-cert.pem'));
+// const key = fs.readFileSync(path.resolve('../server-key.pem'));
+// const cert = fs.readFileSync(path.resolve('../server-cert.pem'));
 
 const config = require('./config/config');
 
@@ -83,9 +83,9 @@ app.use('/signup', (req, res) => {
 const { Router } = require('./routes');
 app.use('/api', Router);
 
-const server = https.createServer({
-  key, cert
-}, app);
+// const server = https.createServer({
+//   key, cert
+// }, app);
 
 // trying configuring HTTPS but haven't succeded
 

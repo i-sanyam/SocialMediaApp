@@ -76,7 +76,7 @@ exports.getProfile = async (req, res) => {
       return responses.sendResponse(res, constants.responseMessages.ACTION_COMPLETE, constants.responseFlags.ACTION_COMPLETE, []);
     }
     userDetails = userDetails[0];
-    userDetails.is_follow = 2; //0 - not 1 - followed, 2 - own account
+    let isFollow = 2; //0 - not 1 - followed, 2 - own account
     if (req.body.is_posts && req.body.user_id && (req.body.user_id != req.userDetails.user_id) && userDetails.is_private) {
       let followStatus = await userService.getFollowStatus(req.apiReference, {
         user_id: req.userDetails.user_id, // user who is requesting the profile
@@ -84,12 +84,12 @@ exports.getProfile = async (req, res) => {
       });
       if (!_.isEmpty(followStatus)) {
         console.log(followStatus);
-        userDetails.is_follow = followStatus[0].is_followed;
+        isFollow = followStatus[0].is_followed;
       } else {
-        userDetails.is_follow = 0;
+        isFollow = 0;
       }
     }
-    if (req.body.is_posts && userDetails.is_follow) {
+    if (req.body.is_posts && isFollow) {
         let posts = await postService.getPosts(req.apiReference, {
           profile_feed: 1,
           user_id: req.body.user_id,

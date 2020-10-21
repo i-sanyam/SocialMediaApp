@@ -46,6 +46,7 @@ exports.userFollow = (req, res, next) => {
     is_follow         : Joi.boolean().required(),
     to_follow_user_id : Joi.string().required(),
   }).unknown(true), req.body, res)) {
+    req.body.is_follow = (req.body.is_follow == 'true');
     next();
   }
 }
@@ -62,6 +63,7 @@ exports.getProfile = (req, res, next) => {
     offset  : Joi.number().optional(),
     limit   : Joi.number().optional(),
   }).unknown(true), req.body, res)) {
+    req.body.is_posts = (req.body.is_posts == "true");
     next();
   }
 }
