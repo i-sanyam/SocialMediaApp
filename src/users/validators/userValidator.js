@@ -43,8 +43,8 @@ exports.userFollow = (req, res, next) => {
   }
   
   if (validator.validateFields(req.apiReference, Joi.object().keys({
-    is_follow    : Joi.boolean().required(),
-    requested_id : Joi.string().required(),
+    is_follow         : Joi.boolean().required(),
+    to_follow_user_id : Joi.string().required(),
   }).unknown(true), req.body, res)) {
     next();
   }

@@ -68,15 +68,19 @@ exports.getProfile = async (req, res) => {
   };
   try {
     let userDetails = await userService.getUser(req.apiReference, {
-      user_id: (req.body.user_id) ? req.body.user_id: req.userDetails.user_id,
-      columns: 'user_id, first_name, last_name, username, bio',
+      user_id  : (req.body.user_id) ? req.body.user_id: req.userDetails.user_id,
+      is_active: 1,
+      columns  : 'user_id, first_name, last_name, username, bio, is_private',
     });
+    if (_.isEmpty(userDetails)) {
+      return responses.sendResponse(res, constants.responseMessages.ACTION_COMPLETE, constants.responseFlags.ACTION_COMPLETE, []);
+    }
     userDetails = userDetails[0];
     userDetails.is_follow = 2; //0 - not 1 - followed, 2 - own account
-    if (req.body.user_id && req.body.user_id != req.userDetails.user_id) {
+    if (req.body.is_posts && req.body.user_id && (req.body.user_id != req.userDetails.user_id) && userDetails.is_private) {
       let followStatus = await userService.getFollowStatus(req.apiReference, {
-        user_id: req.userDetails.user_id,
-        profile_id: req.body.user_id,
+        user_id: req.userDetails.user_id, // user who is requesting the profile
+        profile_id: req.body.user_id, // user profile to see
       });
       if (!_.isEmpty(followStatus)) {
         console.log(followStatus);
@@ -85,10 +89,10 @@ exports.getProfile = async (req, res) => {
         userDetails.is_follow = 0;
       }
     }
-    if (req.body.is_posts) {
+    if (req.body.is_posts && userDetails.is_follow) {
         let posts = await postService.getPosts(req.apiReference, {
           profile_feed: 1,
-          user_id: req.userDetails.user_id,
+          user_id: req.body.user_id,
           offset: 0,
           limit: 25
         });
@@ -105,9 +109,9 @@ exports.userFollow = async (req, res) => {
   try {
     console.log('### Enter')
     await userService.userFollow(req.apiReference, {
-      user_id: req.userDetails.user_id,
-      is_follow: req.body.is_follow,
-      requested_id: req.body.requested_id,
+      user_id           : req.userDetails.user_id,
+      is_follow         : req.body.is_follow,
+      to_follow_user_id : req.body.to_follow_user_id,
     });
     console.log('###');
     return responses.sendResponse(res, constants.responseMessages.ACTION_COMPLETE, constants.responseFlags.ACTION_COMPLETE);
@@ -126,9 +130,12 @@ exports.searchQuery = async function(req, res) {
   try {
     console.log(req.params);
     if (!req.params.query) throw new Error();
-    let results = await userService.searchQuery(req.apiReference, {
-      query: req.params.query
-    });
+    let results = [];
+    if (req.params.query.toString().length > 2) {
+      results = await userService.searchQuery(req.apiReference, {
+        query: req.params.query
+      });
+    }
     return responses.sendResponse(res, constants.responseMessages.ACTION_COMPLETE, constants.responseFlags.ACTION_COMPLETE, results);
 
   } catch(queryError) {

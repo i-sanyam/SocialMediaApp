@@ -23,6 +23,10 @@ exports.getUser = async function (apiReference, opts) {
     sql += ' AND password = ? ';
     values.push(opts.password);
   }
+  if (opts.is_active) {
+    sql += 'AND is_active = ? ';
+    values.push(opts.is_active);
+  }
 
   try {
     let results = await db.executeQuery(apiReference, sql, values);
@@ -92,20 +96,22 @@ exports.userFollow = async function (apiReference, opts) {
   try {
     let getRelation = await db.executeQuery(apiReference,
       'SELECT * FROM `tb_follow_relationship` WHERE user_id = ? AND followed_id = ?',
-      [opts.user_id, opts.requested_id]
+      [opts.user_id, opts.to_follow_user_id]
     );
     if (_.isEmpty(getRelation)) {
       console.log(opts, '###');
       await db.executeQuery(apiReference,
         'INSERT INTO `tb_follow_relationship` (user_id,	followed_id, is_followed) VALUES (?,?,?)',
-        [opts.user_id, opts.requested_id, opts.is_follow ? 1 : 0]);
+        [opts.user_id, opts.to_follow_user_id, opts.is_follow ? 1 : 0]);
     } else {
       getRelation = getRelation[0];
-      await db.executeQuery(
-        apiReference,
-        'UPDATE `tb_follow_relationship` SET is_followed = ? WHERE relation_id = ?',
-        [opts.is_follow ? 1 : 0, getRelation.relation_id]
-      );
+      if (getRelation.is_followed != opts.is_follow) {
+        await db.executeQuery(
+          apiReference,
+          'UPDATE `tb_follow_relationship` SET is_followed = ? WHERE relation_id = ?',
+          [opts.is_follow ? 1 : 0, getRelation.relation_id]
+        );
+      }
     }
     return;
   } catch (sqlError) {
