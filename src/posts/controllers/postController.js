@@ -13,7 +13,8 @@ exports.createPost =  async function (req, res) {
     return responses.sendResponse(
       res,
       constants.responseMessages.ACTION_COMPLETE,
-      constants.responseFlags.ACTION_COMPLETE
+      constants.responseFlags.ACTION_COMPLETE,
+      req.body
     );
   } catch (createPostError) {
       return responses.sendResponse(
@@ -27,8 +28,7 @@ exports.createPost =  async function (req, res) {
 exports.likePost = async function (req, res) {
 
   try {
-    // to implement tb post like relationship
-    await postServices.likePost(req.apiReference, {
+    await postServices.likeUnlikePost(req.apiReference, {
       post_id: req.body.post_id,
       liked_by_id: req.userDetails.user_id,
       is_liked: req.body.is_liked,

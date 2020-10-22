@@ -17,14 +17,36 @@ exports.createPost = async function (apiReference, opts) {
   }
 }
 
-exports.likePost = async function (apiReference, opts) {
+exports.likeUnlikePost = async function (apiReference, opts) {
   try {
-    let value = opts.is_liked ? 1 : -1;
-    await executeQuery(apiReference,
-      'UPDATE `tb_posts` SET likes = likes + ?  WHERE post_id = ?',
-      [value, opts.comment_id]
-    );
-    // to implement like post rlshp
+    let isPostAlreadyLiked = await executeQuery(apiReference, 
+      "SELECT * FROM `tb_like_relationship` WHERE post_id = ? and user_id = ?",
+      [opts.post_id, opts.liked_by_id]
+      );
+    let updateLikesCount = 0;
+    
+    if (_.isEmpty(isPostAlreadyLiked) && opts.is_liked) {
+      //if (opts.is_liked) { // no rlship exists and user likes post
+        await executeQuery(apiReference,
+         "INSERT INTO `tb_like_relationship` (post_id, user_id) VALUES (?,?)",
+         [+opts.post_id, +opts.liked_by_id] );
+        updateLikesCount = 1;
+      //} // else {} // no rlship exists and user unlikes post
+    }
+    if (!_.isEmpty(isPostAlreadyLiked) && !opts.is_liked) {
+      //if (!opts.is_liked) { // rlship exists and user unlikes post
+        await executeQuery(apiReference,
+          "DELETE FROM `tb_like_relationship` WHERE like_id = ?",
+          [isPostAlreadyLiked[0].like_id] );
+         updateLikesCount = -1;
+      //} // else {} // rlship exists and user likes post
+    }
+    if (updateLikesCount != 0) {
+      await executeQuery(apiReference,
+        'UPDATE `tb_posts` SET no_likes = no_likes + ?  WHERE post_id = ?',
+        [updateLikesCount, opts.post_id]
+      );
+    }
     return;
   } catch (sqlError) {
     logging.logError(apiReference, {EVENT: 'createComment SQL Error', ERROR: sqlError});

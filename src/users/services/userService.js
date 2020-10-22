@@ -42,7 +42,8 @@ exports.getFollowedUsers = async function (apiReference, user_id) {
     console.log('@@@');
     let results = await db.executeQuery(apiReference,
       'SELECT followed_id FROM `tb_follow_relationship` WHERE user_id = ? AND is_followed = 1',
-      [user_id]);
+      [user_id]
+    );
     return results;
   } catch (sqlError) {
     logging.logError(apiReference, { EVENT: 'get followed User SQL Error', ERROR: sqlError });
