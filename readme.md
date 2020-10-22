@@ -30,3 +30,8 @@ CREATE TABLE `socialdb`.`tb_users` ( `user_id` INT NOT NULL AUTO_INCREMENT , `fi
 ```sql
 CREATE TABLE `socialdb`.`tb_like_relationship` ( `like_id` INT NOT NULL AUTO_INCREMENT , `post_id` INT NOT NULL , `user_id` INT NOT NULL , PRIMARY KEY (`like_id`), INDEX (`post_id`), INDEX (`user_id`)) ENGINE = InnoDB;
 ```
+
+### tb_like_relationship
+```sql
+CREATE TABLE `socialdb`.`tb_comment_relationship` ( `comment_like_id` INT NOT NULL AUTO_INCREMENT , `comment_id` INT NOT NULL , `user_id` INT NOT NULL , PRIMARY KEY (`comment_like_id`), INDEX (`comment_id`), INDEX (`user_id`)) ENGINE = InnoDB;
+```

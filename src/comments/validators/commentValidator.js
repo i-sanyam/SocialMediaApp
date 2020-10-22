@@ -29,6 +29,7 @@ exports.likeComment = function (req, res, next) {
     post_id         : Joi.number().optional(),
     is_liked        : Joi.boolean().required(),
   }).unknown(true), req.body, res)) {
+    req.body.is_liked = (req.body.is_liked == "true");
     next();
   }
 }

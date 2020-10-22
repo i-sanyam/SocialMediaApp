@@ -13,7 +13,8 @@ exports.createComment = async function (req, res) {
     return responses.sendResponse(
       res,
       constants.responseMessages.ACTION_COMPLETE,
-      constants.responseFlags.ACTION_COMPLETE
+      constants.responseFlags.ACTION_COMPLETE,
+      req.body
     );
   } catch (createPostError) {
       return responses.sendResponse(
@@ -28,7 +29,7 @@ exports.likeComment = async function (req, res) {
   
   try {
     // to implement tb_comment_like relationship
-    await commentServices.likeComment(req.apiReference, {
+    await commentServices.likeUnlikeComment(req.apiReference, {
       comment_id: req.body.comment_id,
       liked_by_id: req.userDetails.user_id,
       is_liked: req.body.is_liked,
