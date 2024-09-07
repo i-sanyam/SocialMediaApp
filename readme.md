@@ -1,3 +1,5 @@
+Full-stack - Node.js, HTML, MySQL -  social media application.
+
 ## Startup
 
 ```terminal
